@@ -5,10 +5,10 @@ import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
 import { VRButton } from 'three/addons/webxr/VRButton.js';
 import { handleInput } from './controllers';
 import { iwerSetup } from './iwer';
+import { setupHandTracking } from './handTracking';
 
 export async function init(setupScene = () => {}, onFrame = () => {}) {
-	
-	await iwerSetup()
+	await iwerSetup();
 
 	const container = document.createElement('div');
 	document.body.appendChild(container);
@@ -42,8 +42,8 @@ export async function init(setupScene = () => {}, onFrame = () => {}) {
 	scene.add(player);
 	player.add(camera);
 
-	
-	const controllers = handleInput(renderer,player)
+	const controllers = handleInput(renderer, player);
+	// const hands = setupHandTracking(renderer, scene);
 
 	function onWindowResize() {
 		camera.aspect = window.innerWidth / window.innerHeight;
