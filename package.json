@@ -1,22 +1,32 @@
 {
-    "name": "vrps.wlp",
-    "version": "1.0.0",
-    "description": "My Wonderland project",
-    "main": "js/index.js",
+    "name": "wle-pplayground",
+    "version": "0.5.1",
+    "author": "Pipo",
+    "description": "Playground template project for the Wonderland Engine",
+    "homepage": "https://github.com/signorpipo/wle-pplaygrounds",
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/signorpipo/wle-pplaygrounds.git"
+    },
+    "license": "ISC",
     "type": "module",
-    "module": "js/index.js",
-    "scripts": {
-        "build": "echo \"The 'build' script is run by the editor and should produce your application bundle\""
-    },
-    "keywords": [
-        "wonderland-engine"
-    ],
     "dependencies": {
-        "@wonderlandengine/api": ">=1.3.0 <1.4.0",
-        "@wonderlandengine/components": "^1.2.1",
-        "gl-matrix": "^3.4.3"
+        "@wonderlandengine/api": "~1.3.1",
+        "@wonderlandengine/components": "~1.2.1",
+        "gl-matrix": "^3.4.3",
+        "howler": "^2.2.4",
+        "wle-pp": "0.8.0"
     },
-    "overrides": {
-        "@wonderlandengine/api": "$@wonderlandengine/api"
+    "devDependencies": {
+        "eslint": "^9.19.0",
+        "globals": "^15.14.0",
+        "typescript": "^5.7.3",
+        "typescript-eslint": "^8.23.0"
+    },
+    "optionalDependencies": {
+        "@playkostudios/wle-cleaner": "^0.8.1"
+    },
+    "scripts": {
+        "clean-projects": "wle-cleaner \"./*.wlp\" -r -e dev/wle-tool-utils/editor-bundle-extras.js"
     }
 }
