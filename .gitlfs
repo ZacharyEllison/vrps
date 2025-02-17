@@ -1,0 +1,23 @@
+# Audio files
+
+*.mp3 *.wav *.ogg *.webm
+
+# Video files
+
+*.mp4
+
+# Binary 3D model files
+
+*.glb *.fbx *.bin *.blend *.ply
+
+# Image files
+
+*.png *.jpeg *.webp *.bmp *.exr *.hdr *.basis
+
+# Font files
+
+*.ttf *.otf
+
+# Archives
+
+*.zip *.tar.gz

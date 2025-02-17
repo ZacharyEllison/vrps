@@ -321,12 +321,15 @@
                 {
                     "type": "pp-tracked-hand-draw-all-joints",
                     "pp-tracked-hand-draw-all-joints": {
-                        "_myJointMesh": "p1",
-                        "_myJointMaterial": "6c7363ad-f7ee-465b-9031-541e40292fff"
+                        "_myJointMesh": "p3",
+                        "_myJointMaterial": "3699d0b5-ea21-4ec3-8d94-7f02ef40eec8"
                     }
                 },
                 {
-                    "type": "pp-reset-local-transform"
+                    "type": "pp-reset-local-transform",
+                    "pp-reset-local-transform": {
+                        "_myResetLocalTransformOn": "Self"
+                    }
                 }
             ],
             "translation": [
@@ -2897,47 +2900,6 @@
                 0.0,
                 0.0099995
             ]
-        },
-        "b06d6c6b-0d32-4a73-a92e-c0cea32b4e88": {
-            "link": {
-                "name": "Wondermelon",
-                "file": "assets\\models\\playground\\wondermelon.fbx"
-            }
-        },
-        "887d4b28-2045-4474-a3b4-50f63273b6d0": {
-            "link": {
-                "name": "Wondermelon Peel<Wondermelon",
-                "file": "assets\\models\\playground\\wondermelon.fbx"
-            },
-            "parent": "b06d6c6b-0d32-4a73-a92e-c0cea32b4e88"
-        },
-        "42218d5f-136a-496f-9f22-4f7e76d59537": {
-            "link": {
-                "name": "Wondermelon Rind<Wondermelon",
-                "file": "assets\\models\\playground\\wondermelon.fbx"
-            },
-            "parent": "b06d6c6b-0d32-4a73-a92e-c0cea32b4e88"
-        },
-        "9c20c691-74fc-4fbf-9904-67ef98c6e867": {
-            "link": {
-                "name": "Wondermelon Pulp<Wondermelon",
-                "file": "assets\\models\\playground\\wondermelon.fbx"
-            },
-            "parent": "b06d6c6b-0d32-4a73-a92e-c0cea32b4e88"
-        },
-        "b34c9825-fc44-43a0-9cc9-01175326926f": {
-            "link": {
-                "name": "Wondermelon Seed<Wondermelon",
-                "file": "assets\\models\\playground\\wondermelon.fbx"
-            },
-            "parent": "b06d6c6b-0d32-4a73-a92e-c0cea32b4e88"
-        },
-        "4795de35-4bfd-4018-99fe-6ab1955d2c93": {
-            "link": {
-                "name": "Wondermelon Convex Mesh Fit<Wondermelon",
-                "file": "assets\\models\\playground\\wondermelon.fbx"
-            },
-            "parent": "b06d6c6b-0d32-4a73-a92e-c0cea32b4e88"
         }
     },
     "meshes": {

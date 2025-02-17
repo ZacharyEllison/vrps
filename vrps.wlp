@@ -321,12 +321,16 @@
                 {
                     "type": "pp-tracked-hand-draw-all-joints",
                     "pp-tracked-hand-draw-all-joints": {
-                        "_myJointMesh": "p3",
-                        "_myJointMaterial": "3699d0b5-ea21-4ec3-8d94-7f02ef40eec8"
+                        "_myJointMesh": "p2",
+                        "_myJointMaterial": "70411200-8fd5-41e1-86bd-6790741273e5"
                     }
                 },
                 {
-                    "type": "pp-reset-local-transform"
+                    "type": "pp-reset-local-transform",
+                    "pp-reset-local-transform": {
+                        "_myResetLocalTransformOn": "Self",
+                        "_myResetLocalTransformWhen": "Init"
+                    }
                 }
             ],
             "translation": [
@@ -406,8 +410,8 @@
                 {
                     "type": "pp-tracked-hand-draw-all-joints",
                     "pp-tracked-hand-draw-all-joints": {
-                        "_myJointMesh": "p1",
-                        "_myJointMaterial": "6c7363ad-f7ee-465b-9031-541e40292fff",
+                        "_myJointMesh": "p2",
+                        "_myJointMaterial": "70411200-8fd5-41e1-86bd-6790741273e5",
                         "_myHandedness": "Right"
                     }
                 },
