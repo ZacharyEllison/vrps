@@ -70,7 +70,8 @@
                     "type": "view"
                 },
                 {
-                    "type": "mouse-look"
+                    "type": "mouse-look",
+                    "active": true
                 },
                 {
                     "type": "cursor",
@@ -82,7 +83,8 @@
                         "cursorObject": null,
                         "rayCastMode": "physx",
                         "maxDistance": 1.5
-                    }
+                    },
+                    "active": true
                 }
             ]
         },
@@ -932,91 +934,19 @@
             "name": "Throw Platform",
             "parent": "526adb29-57d2-4b09-ac41-5efed44996a2"
         },
-        "a7bb957a-b593-4668-b314-8de935662265": {
-            "name": "Ramp",
-            "parent": "4811f747-5d3c-41f7-82ff-4c9e708d0ee6",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "p1",
-                        "material": "90348bdc-8768-4244-9398-b89361708289"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                0.5,
-                                0.1,
-                                1.0
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "static": true
-                    }
-                }
-            ],
-            "rotation": [
-                0.258819,
-                0.0,
-                0.0,
-                0.9659258
-            ],
-            "translation": [
-                0.0,
-                0.2649999,
-                1.8149999
-            ],
-            "scaling": [
-                0.5,
-                0.1,
-                1.0
-            ]
+        "91398512-E32A-48AA-9E57-FB814E47EB60": {
+            "link": {
+                "name": "GOLD MASTER SWORD",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            },
+            "parent": "250D2AB7-58C4-4523-B95A-A019009E064E"
         },
-        "d4f8e8c4-d965-459d-bee8-25d038e20d7c": {
-            "name": "Floor",
-            "parent": "4811f747-5d3c-41f7-82ff-4c9e708d0ee6",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "p1",
-                        "material": "90348bdc-8768-4244-9398-b89361708289"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                1.0,
-                                0.1,
-                                1.0
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "static": true
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                0.75,
-                0.0
-            ],
-            "scaling": [
-                1.0,
-                0.1,
-                1.0
-            ]
+        "9253EFB0-C278-4C98-86C3-6A2A989D974A": {
+            "link": {
+                "name": "THEMASTERSWORD6",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            },
+            "parent": "250D2AB7-58C4-4523-B95A-A019009E064E"
         },
         "c928fe5d-e540-4618-88f6-6900f723ff4d": {
             "name": "Fence",
@@ -1171,127 +1101,87 @@
                 -1.0
             ]
         },
-        "9db243ba-5a45-47c7-b45a-84fbfff5a9b9": {
-            "name": "Throw Target",
+        "9d8a9208-a999-4ce2-82a8-e4151733810d": {
+            "name": "Outline Text",
+            "parent": "53b00032-fde3-4b7e-a1c1-c9865f6cbd34",
+            "scaling": [
+                0.8999995,
+                0.8999998,
+                0.8999997
+            ],
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Grab the item on your right by pinching your fingers, and release them to throw\nTry to hit the target!\n\nMany features are currently not available with hand tracking,\nsuch as free movement and debug tools like the console vr widget\n\nTo use these features, you need to switch to gamepads",
+                        "material": "eb68d1ad-89df-45b0-a7ff-d270e70a6ffe",
+                        "effect": "outline"
+                    }
+                }
+            ],
+            "translation": [
+                0.0,
+                0.0,
+                0.0049999
+            ]
+        },
+        "14c75133-db8b-4f61-b18a-0b8a8b140fa0": {
+            "name": "Text",
+            "parent": "53b00032-fde3-4b7e-a1c1-c9865f6cbd34",
+            "scaling": [
+                0.8999995,
+                0.8999998,
+                0.8999997
+            ],
+            "components": [
+                {
+                    "type": "text",
+                    "text": {
+                        "text": "Grab the item on your right by pinching your fingers, and release them to throw\nTry to hit the target!\n\nMany features are currently not available with hand tracking,\nsuch as free movement and debug tools like the console vr widget\n\nTo use these features, you need to switch to gamepads",
+                        "material": "04b7f97e-2921-4f88-91f3-20e62ec5c355"
+                    }
+                }
+            ],
+            "translation": [
+                0.0,
+                0.0,
+                0.0099995
+            ]
+        },
+        "C901EDB7-B5A6-430E-A042-9ACFC6AA9B36": {
+            "link": {
+                "name": "Light",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "E61A7ABF-8123-44EB-B93B-53D2D730B7D4": {
+            "link": {
+                "name": "Camera",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "250D2AB7-58C4-4523-B95A-A019009E064E": {
+            "name": "Master sword",
             "parent": "526adb29-57d2-4b09-ac41-5efed44996a2",
-            "translation": [
-                0.0,
-                3.5,
-                5.0
-            ],
-            "components": [
-                {
-                    "type": "target-hit-check"
-                },
-                {
-                    "type": "wave-movement"
-                },
-                {
-                    "type": "fun",
-                    "active": false
-                }
-            ]
-        },
-        "7a353774-4e77-47ad-981b-d9d0dc0c3007": {
-            "name": "Frame",
-            "parent": "9db243ba-5a45-47c7-b45a-84fbfff5a9b9"
-        },
-        "403ece94-4b75-4f64-a799-c45351cb2659": {
-            "name": "Edge",
-            "parent": "7a353774-4e77-47ad-981b-d9d0dc0c3007",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "p1",
-                        "material": "6c7363ad-f7ee-465b-9031-541e40292fff"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                0.6499999,
-                                0.075,
-                                0.075
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "kinematic": true
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                -0.5749999,
-                0.0
-            ],
             "scaling": [
-                0.6499999,
-                0.075,
-                0.075
-            ]
-        },
-        "3c141d1a-c767-4887-97bf-b096caf47be5": {
-            "name": "Edge",
-            "parent": "7a353774-4e77-47ad-981b-d9d0dc0c3007",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "p1",
-                        "material": "6c7363ad-f7ee-465b-9031-541e40292fff"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                0.6499999,
-                                0.075,
-                                0.075
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "kinematic": true
-                    }
-                }
+                0.0499965,
+                0.05,
+                0.0499965
+            ],
+            "translation": [
+                -0.0781302,
+                0.6176943,
+                -0.1955076
             ],
             "rotation": [
-                0.0,
-                0.0,
-                0.7071068,
-                0.7071067
+                -1.2215187439323927e-7,
+                0.707086,
+                -5.614033966594434e-7,
+                0.7071274
             ],
-            "translation": [
-                -0.5749999,
-                0.0,
-                0.0
-            ],
-            "scaling": [
-                0.6499999,
-                0.075,
-                0.075
-            ]
-        },
-        "6e497e37-efbc-485f-b51c-a960ba56daee": {
-            "name": "Edge",
-            "parent": "7a353774-4e77-47ad-981b-d9d0dc0c3007",
             "components": [
                 {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "p1",
-                        "material": "6c7363ad-f7ee-465b-9031-541e40292fff"
-                    }
+                    "type": "pp-grabbable"
                 },
                 {
                     "type": "physx",
@@ -1299,104 +1189,37 @@
                         "shape": "box",
                         "box": {
                             "extents": [
-                                0.6499999,
-                                0.075,
-                                0.075
+                                0.05,
+                                0.6,
+                                0.125
                             ]
                         },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "kinematic": true
+                        "translationOffset": [
+                            0.05,
+                            0.3,
+                            0.0
+                        ],
+                        "simulate": true,
+                        "static": false,
+                        "kinematic": false,
+                        "bounciness": 2.0
                     }
                 }
-            ],
-            "translation": [
-                0.0,
-                0.5749999,
-                0.0
-            ],
-            "scaling": [
-                0.6499999,
-                0.075,
-                0.075
             ]
         },
-        "f92f411b-0eef-4a96-9949-fb7d21e452bb": {
-            "name": "Edge",
-            "parent": "7a353774-4e77-47ad-981b-d9d0dc0c3007",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "p1",
-                        "material": "6c7363ad-f7ee-465b-9031-541e40292fff"
-                    }
-                },
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                0.6499999,
-                                0.075,
-                                0.075
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "kinematic": true
-                    }
-                }
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.7071068,
-                0.7071067
-            ],
-            "translation": [
-                0.5749999,
-                0.0,
-                0.0
-            ],
-            "scaling": [
-                0.6499999,
-                0.075,
-                0.075
-            ]
+        "146131BC-E42A-4FB1-BB95-DC668C821AE2": {
+            "link": {
+                "name": "PURPLE MASTERSWORD",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            },
+            "parent": "250D2AB7-58C4-4523-B95A-A019009E064E"
         },
-        "8bba5a93-f97f-42b0-bda8-2f356131b3b9": {
-            "name": "Target Hit Trigger",
-            "parent": "9db243ba-5a45-47c7-b45a-84fbfff5a9b9",
-            "components": [
-                {
-                    "type": "physx",
-                    "physx": {
-                        "groups": 4,
-                        "block": 0,
-                        "gravity": false,
-                        "kinematic": true,
-                        "trigger": true,
-                        "allowSimulation": false,
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                0.6,
-                                0.6,
-                                0.1
-                            ]
-                        }
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                0.0,
-                0.25
-            ]
+        "D9943F31-56D8-4A94-8445-39D8901B27B0": {
+            "link": {
+                "name": "GREENMASTERSWORD",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            },
+            "parent": "250D2AB7-58C4-4523-B95A-A019009E064E"
         },
         "930d0bc9-4a48-4ec5-b0cd-1b61c68f8624": {
             "name": "Mesh",
@@ -2854,112 +2677,6 @@
                     }
                 }
             ]
-        },
-        "9d8a9208-a999-4ce2-82a8-e4151733810d": {
-            "name": "Outline Text",
-            "parent": "53b00032-fde3-4b7e-a1c1-c9865f6cbd34",
-            "scaling": [
-                0.8999995,
-                0.8999998,
-                0.8999997
-            ],
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "Grab the item on your right by pinching your fingers, and release them to throw\nTry to hit the target!\n\nMany features are currently not available with hand tracking,\nsuch as free movement and debug tools like the console vr widget\n\nTo use these features, you need to switch to gamepads",
-                        "material": "eb68d1ad-89df-45b0-a7ff-d270e70a6ffe",
-                        "effect": "outline"
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                0.0,
-                0.0049999
-            ]
-        },
-        "14c75133-db8b-4f61-b18a-0b8a8b140fa0": {
-            "name": "Text",
-            "parent": "53b00032-fde3-4b7e-a1c1-c9865f6cbd34",
-            "scaling": [
-                0.8999995,
-                0.8999998,
-                0.8999997
-            ],
-            "components": [
-                {
-                    "type": "text",
-                    "text": {
-                        "text": "Grab the item on your right by pinching your fingers, and release them to throw\nTry to hit the target!\n\nMany features are currently not available with hand tracking,\nsuch as free movement and debug tools like the console vr widget\n\nTo use these features, you need to switch to gamepads",
-                        "material": "04b7f97e-2921-4f88-91f3-20e62ec5c355"
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                0.0,
-                0.0099995
-            ]
-        },
-        "25EF5E5E-E9CB-49BE-9E18-D31FF91C1889": {
-            "name": "Orange",
-            "parent": "62bb96e5-dca3-4608-8f0c-c546219e5bdc",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "mesh": "F3A37AAE-83DD-43F9-8BE1-C98B77220C14",
-                        "material": "C695D87C-D2D5-47B2-A65F-1B7AF65E3CCC"
-                    }
-                },
-                {
-                    "type": "pp-easy-active",
-                    "pp-easy-active": {
-                        "_myVariableName": "orange"
-                    }
-                },
-                {
-                    "type": "pp-easy-light-color",
-                    "pp-easy-light-color": {
-                        "_myUseTuneTarget": true,
-                        "_mySetAsWidgetCurrentVariable": true,
-                        "_myVariableName": "orange-color"
-                    }
-                },
-                {
-                    "type": "pp-easy-tune-import-variables",
-                    "active": true
-                },
-                {
-                    "type": "pp-easy-tune-tool",
-                    "pp-easy-tune-tool": {
-                        "_myShowOnStart": true
-                    }
-                },
-                {
-                    "type": "pp-grabbable"
-                },
-                {
-                    "type": "pp-set-active"
-                }
-            ],
-            "scaling": [
-                0.05,
-                0.05,
-                0.05
-            ],
-            "translation": [
-                0.6777955,
-                2.0556871,
-                -0.6777954
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
         }
     },
     "meshes": {
@@ -3124,6 +2841,36 @@
                 "name": "mesh_0",
                 "file": "assets\\models\\playground\\Orange Fruit 00.fbx"
             }
+        },
+        "CA7402E5-3DA2-4987-8023-86E1F095ECA5": {
+            "link": {
+                "name": "mesh_0",
+                "file": "assets\\models\\playground\\Stone-well.fbx"
+            }
+        },
+        "E787676A-7252-4C3E-ABF6-513CD087605A": {
+            "link": {
+                "name": "mesh_0",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "70BBA57B-BE75-431C-B4EE-E46F5C2ECC5E": {
+            "link": {
+                "name": "mesh_1",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "F3121D85-A704-442A-9259-78A6F983A488": {
+            "link": {
+                "name": "mesh_2",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "422D742A-B4D1-4382-897C-B469DF70318B": {
+            "link": {
+                "name": "mesh_3",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
         }
     },
     "images": {
@@ -3147,6 +2894,12 @@
             "link": {
                 "name": "base_color_texture",
                 "file": "assets\\models\\playground\\Orange Fruit 00.fbx"
+            }
+        },
+        "2CAA7108-9EF5-44A9-AFDD-A80F0AFFCE3E": {
+            "link": {
+                "name": "base_color_texture",
+                "file": "assets\\models\\playground\\Stone-well.fbx"
             }
         }
     },
@@ -3662,6 +3415,61 @@
                 "name": "Mat_Orange Fruit 00",
                 "file": "assets\\models\\playground\\Orange Fruit 00.fbx"
             }
+        },
+        "C41A8D19-067C-479F-8779-54C34A54A499": {
+            "link": {
+                "name": "Mat_Stone-well",
+                "file": "assets\\models\\playground\\Stone-well.fbx"
+            },
+            "pipeline": "9104535f-2c03-4d28-8052-347735487f59"
+        },
+        "D4A1C097-960F-4B0A-A937-C7BF443F8194": {
+            "link": {
+                "name": "Material.004",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "CB0AC819-2ED8-4409-AC45-3B71A8B38C1E": {
+            "link": {
+                "name": "Material.002",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "F3A16304-742A-425A-A84D-9A7CC28881C0": {
+            "link": {
+                "name": "Material.003",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "268FBE02-1F76-4DF6-B1A9-42C278AEE4A6": {
+            "link": {
+                "name": "Material.001",
+                "file": "assets\\models\\playground\\The_Sword.fbx"
+            }
+        },
+        "8BB2065F-1346-4396-B875-4A27EDC4CD2D": {
+            "link": {
+                "name": "Material.004",
+                "file": "assets\\models\\playground\\scene.gltf"
+            }
+        },
+        "493C4955-7C69-44F0-AF57-40EFE7A00AFB": {
+            "link": {
+                "name": "Material.002",
+                "file": "assets\\models\\playground\\scene.gltf"
+            }
+        },
+        "D285A48C-A1F6-4C66-9D53-F8A2C93B5EDF": {
+            "link": {
+                "name": "Material.003",
+                "file": "assets\\models\\playground\\scene.gltf"
+            }
+        },
+        "5654B942-62C4-4713-8F75-6AD9A2FBF43C": {
+            "link": {
+                "name": "Material.001",
+                "file": "assets\\models\\playground\\scene.gltf"
+            }
         }
     },
     "animations": {},
@@ -3829,6 +3637,21 @@
         },
         "424784A7-0A8B-4AD7-A9FD-FF2DBA26B1DF": {
             "fileName": "assets/models/playground/Orange Fruit 00.fbx",
+            "importerName": "",
+            "importPhysicalAsPhongMaterials": true
+        },
+        "362DD419-F2C8-47A8-AC83-BB5DF5EAF93F": {
+            "fileName": "assets/models/playground/Stone-well.fbx",
+            "importerName": "",
+            "importPhysicalAsPhongMaterials": true
+        },
+        "6097DB96-7526-4C1A-8237-668516A5DE79": {
+            "fileName": "assets/models/playground/The_Sword.fbx",
+            "importerName": "",
+            "importPhysicalAsPhongMaterials": true
+        },
+        "D81F5313-3134-4545-B5FD-ABA5DE5ECC80": {
+            "fileName": "assets/models/playground/scene.gltf",
             "importerName": "",
             "importPhysicalAsPhongMaterials": true
         }

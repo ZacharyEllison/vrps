@@ -1154,11 +1154,17 @@
                 "file": "assets\\models\\playground\\The_Sword.fbx"
             }
         },
-        "E61A7ABF-8123-44EB-B93B-53D2D730B7D4": {
-            "link": {
-                "name": "Camera",
-                "file": "assets\\models\\playground\\The_Sword.fbx"
-            }
+        "53b00032-fde3-4b7e-a1c1-c9865f6cbd34": {
+            "name": "Tracked Hand Text",
+            "parent": "ecaac23c-a887-4bfd-babb-9606a9278f9f",
+            "components": [
+                {
+                    "type": "set-active-on-tracked-hands",
+                    "set-active-on-tracked-hands": {
+                        "_myActiveOnTrackedHands": true
+                    }
+                }
+            ]
         },
         "250D2AB7-58C4-4523-B95A-A019009E064E": {
             "name": "Master sword",
@@ -1174,7 +1180,7 @@
                 -0.1955076
             ],
             "rotation": [
-                -1.2215187439323927e-7,
+                -1.221518743932393e-7,
                 0.707086,
                 -5.614033966594434e-7,
                 0.7071274
@@ -2663,18 +2669,6 @@
             "components": [
                 {
                     "type": "set-active-on-tracked-hands"
-                }
-            ]
-        },
-        "53b00032-fde3-4b7e-a1c1-c9865f6cbd34": {
-            "name": "Tracked Hand Text",
-            "parent": "ecaac23c-a887-4bfd-babb-9606a9278f9f",
-            "components": [
-                {
-                    "type": "set-active-on-tracked-hands",
-                    "set-active-on-tracked-hands": {
-                        "_myActiveOnTrackedHands": true
-                    }
                 }
             ]
         }
