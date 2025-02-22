@@ -1220,7 +1220,7 @@
                         "simulate": true,
                         "static": false,
                         "kinematic": false,
-                        "bounciness": 1.0
+                        "bounciness": 2.0
                     }
                 }
             ]
