@@ -58865,15 +58865,109 @@ __publicField(FadeViewComponent, "Properties", {
   _myStartDelay: Property48.float(0)
 });
 
-// src/playground/components/fun_component.ts
-import { Component as Component105 } from "@wonderlandengine/api";
+// src/playground/components/grabbable_spawner_component.js
+import { Component as Component103, Property as Property49 } from "@wonderlandengine/api";
+var GrabbableSpawnerComponent = class extends Component103 {
+  start() {
+    this._myPrototypes = this._myPrototypesContainer.pp_getChildren();
+    this._myCurrentGrabbable = null;
+    this._myFirstUpdate = true;
+    this._myStartTimer = new Timer(0);
+    this._myObjectPosition = vec3_create();
+    this._myCurrentGrabbablePosition = vec3_create();
+  }
+  update(dt) {
+    if (this._myFirstUpdate) {
+      this._myFirstUpdate = false;
+      for (let prototype of this._myPrototypes) {
+        prototype.pp_setActive(false);
+      }
+    } else {
+      if (this._myStartTimer.isRunning()) {
+        this._myStartTimer.update(dt);
+        if (this._myStartTimer.isDone()) {
+          this._spawn();
+        }
+      } else {
+        if (this._myCurrentGrabbable != null) {
+          if (this.object.pp_getPosition(this._myObjectPosition).vec3_distance(this._myCurrentGrabbable.pp_getPosition(this._myCurrentGrabbablePosition)) > 0.2) {
+            this._spawn();
+          }
+        }
+      }
+    }
+  }
+  _spawn() {
+    this._myCurrentGrabbable = Math.pp_randomPick(this._myPrototypes).pp_clone();
+    this._myCurrentGrabbable.pp_setParent(this.object);
+    this._myCurrentGrabbable.pp_setPosition(this.object.pp_getPosition());
+    this._myCurrentGrabbable.pp_setActive(true);
+  }
+};
+__publicField(GrabbableSpawnerComponent, "TypeName", "grabbable-spawner");
+__publicField(GrabbableSpawnerComponent, "Properties", {
+  _myPrototypesContainer: Property49.object()
+});
+
+// src/playground/components/load_audio_component.js
+import { Component as Component104 } from "@wonderlandengine/api";
+var LoadAudioComponent = class extends Component104 {
+  start() {
+    this._myFirstUpdate = true;
+  }
+  update(dt) {
+    if (this._myFirstUpdate) {
+      this._loadAudio();
+      this._myFirstUpdate = false;
+    }
+  }
+  _loadAudio() {
+    let manager = Globals.getAudioManager(this.engine);
+    {
+      let audioSetup = new AudioSetup("assets/audio/music/playground/playground_ambient.mp3");
+      audioSetup.myLoop = true;
+      audioSetup.mySpatial = false;
+      audioSetup.myVolume = 1;
+      manager.addAudioSetup("playground_ambient", audioSetup);
+    }
+    {
+      let audioSetup = new AudioSetup("assets/audio/sfx/playground/collision.mp3");
+      audioSetup.myRate = 1;
+      audioSetup.myVolume = 1;
+      audioSetup.myReferenceDistance = 5;
+      manager.addAudioSetup("collision", audioSetup);
+    }
+    {
+      let audioSetup = new AudioSetup("assets/audio/sfx/playground/grab.mp3");
+      audioSetup.myRate = 1;
+      audioSetup.myVolume = 1;
+      audioSetup.myReferenceDistance = 0.5;
+      manager.addAudioSetup("grab", audioSetup);
+    }
+    {
+      let audioSetup = new AudioSetup("assets/audio/sfx/playground/throw.mp3");
+      audioSetup.myRate = 1;
+      audioSetup.myVolume = 1;
+      audioSetup.myReferenceDistance = 0.5;
+      manager.addAudioSetup("throw", audioSetup);
+    }
+    {
+      let audioSetup = new AudioSetup("assets/audio/sfx/playground/strike.mp3");
+      audioSetup.myRate = 1;
+      audioSetup.myVolume = 1;
+      audioSetup.myReferenceDistance = 3;
+      manager.addAudioSetup("strike", audioSetup);
+    }
+  }
+};
+__publicField(LoadAudioComponent, "TypeName", "load-audio");
 
 // src/playground/components/particles_spawner_component.js
-import { Component as Component104, MeshComponent as MeshComponent24, Property as Property49 } from "@wonderlandengine/api";
+import { Component as Component106, MeshComponent as MeshComponent24, Property as Property50 } from "@wonderlandengine/api";
 
 // src/playground/components/particle_component.js
-import { Component as Component103 } from "@wonderlandengine/api";
-var ParticleComponent = class extends Component103 {
+import { Component as Component105 } from "@wonderlandengine/api";
+var ParticleComponent = class extends Component105 {
   init() {
     this._myOnDoneCallback = null;
   }
@@ -58933,7 +59027,7 @@ var ParticleComponent = class extends Component103 {
 __publicField(ParticleComponent, "TypeName", "particle");
 
 // src/playground/components/particles_spawner_component.js
-var ParticlesSpawnerComponent = class extends Component104 {
+var ParticlesSpawnerComponent = class extends Component106 {
   start() {
     this._myStartFrameCountdown = 1;
   }
@@ -58998,127 +59092,13 @@ var ParticlesSpawnerComponent = class extends Component104 {
 };
 __publicField(ParticlesSpawnerComponent, "TypeName", "particles-spawner");
 __publicField(ParticlesSpawnerComponent, "Properties", {
-  _myParticlesContainer: Property49.object(),
-  _myRadius: Property49.float(0.25)
+  _myParticlesContainer: Property50.object(),
+  _myRadius: Property50.float(0.25)
 });
-
-// src/playground/components/fun_component.ts
-var FunComponent = class extends Component105 {
-  _myParticlesSpawner;
-  start() {
-    this._myParticlesSpawner = Globals.getRootObject(this.engine).pp_getComponent(ParticlesSpawnerComponent);
-  }
-  update(dt) {
-    this._fun();
-  }
-  _fun() {
-    if (Globals.getLeftGamepad(this.engine).getButtonInfo(GamepadButtonID.SELECT).isPressed()) {
-      this._myParticlesSpawner.spawn(this.object.pp_getPosition());
-    }
-  }
-};
-__publicField(FunComponent, "TypeName", "fun");
-
-// src/playground/components/grabbable_spawner_component.js
-import { Component as Component106, Property as Property50 } from "@wonderlandengine/api";
-var GrabbableSpawnerComponent = class extends Component106 {
-  start() {
-    this._myPrototypes = this._myPrototypesContainer.pp_getChildren();
-    this._myCurrentGrabbable = null;
-    this._myFirstUpdate = true;
-    this._myStartTimer = new Timer(0);
-    this._myObjectPosition = vec3_create();
-    this._myCurrentGrabbablePosition = vec3_create();
-  }
-  update(dt) {
-    if (this._myFirstUpdate) {
-      this._myFirstUpdate = false;
-      for (let prototype of this._myPrototypes) {
-        prototype.pp_setActive(false);
-      }
-    } else {
-      if (this._myStartTimer.isRunning()) {
-        this._myStartTimer.update(dt);
-        if (this._myStartTimer.isDone()) {
-          this._spawn();
-        }
-      } else {
-        if (this._myCurrentGrabbable != null) {
-          if (this.object.pp_getPosition(this._myObjectPosition).vec3_distance(this._myCurrentGrabbable.pp_getPosition(this._myCurrentGrabbablePosition)) > 0.2) {
-            this._spawn();
-          }
-        }
-      }
-    }
-  }
-  _spawn() {
-    this._myCurrentGrabbable = Math.pp_randomPick(this._myPrototypes).pp_clone();
-    this._myCurrentGrabbable.pp_setParent(this.object);
-    this._myCurrentGrabbable.pp_setPosition(this.object.pp_getPosition());
-    this._myCurrentGrabbable.pp_setActive(true);
-  }
-};
-__publicField(GrabbableSpawnerComponent, "TypeName", "grabbable-spawner");
-__publicField(GrabbableSpawnerComponent, "Properties", {
-  _myPrototypesContainer: Property50.object()
-});
-
-// src/playground/components/load_audio_component.js
-import { Component as Component107 } from "@wonderlandengine/api";
-var LoadAudioComponent = class extends Component107 {
-  start() {
-    this._myFirstUpdate = true;
-  }
-  update(dt) {
-    if (this._myFirstUpdate) {
-      this._loadAudio();
-      this._myFirstUpdate = false;
-    }
-  }
-  _loadAudio() {
-    let manager = Globals.getAudioManager(this.engine);
-    {
-      let audioSetup = new AudioSetup("assets/audio/music/playground/playground_ambient.mp3");
-      audioSetup.myLoop = true;
-      audioSetup.mySpatial = false;
-      audioSetup.myVolume = 1;
-      manager.addAudioSetup("playground_ambient", audioSetup);
-    }
-    {
-      let audioSetup = new AudioSetup("assets/audio/sfx/playground/collision.mp3");
-      audioSetup.myRate = 1;
-      audioSetup.myVolume = 1;
-      audioSetup.myReferenceDistance = 5;
-      manager.addAudioSetup("collision", audioSetup);
-    }
-    {
-      let audioSetup = new AudioSetup("assets/audio/sfx/playground/grab.mp3");
-      audioSetup.myRate = 1;
-      audioSetup.myVolume = 1;
-      audioSetup.myReferenceDistance = 0.5;
-      manager.addAudioSetup("grab", audioSetup);
-    }
-    {
-      let audioSetup = new AudioSetup("assets/audio/sfx/playground/throw.mp3");
-      audioSetup.myRate = 1;
-      audioSetup.myVolume = 1;
-      audioSetup.myReferenceDistance = 0.5;
-      manager.addAudioSetup("throw", audioSetup);
-    }
-    {
-      let audioSetup = new AudioSetup("assets/audio/sfx/playground/strike.mp3");
-      audioSetup.myRate = 1;
-      audioSetup.myVolume = 1;
-      audioSetup.myReferenceDistance = 3;
-      manager.addAudioSetup("strike", audioSetup);
-    }
-  }
-};
-__publicField(LoadAudioComponent, "TypeName", "load-audio");
 
 // src/playground/components/play_music_component.js
-import { Component as Component108 } from "@wonderlandengine/api";
-var PlayMusicComponent = class extends Component108 {
+import { Component as Component107 } from "@wonderlandengine/api";
+var PlayMusicComponent = class extends Component107 {
   start() {
     this._myStarted = false;
   }
@@ -59146,6 +59126,24 @@ __publicField(PlayMusicComponent, "TypeName", "play-music");
 
 // src/playground/components/playground_gateway_component.js
 import { Component as Component113 } from "@wonderlandengine/api";
+
+// src/playground/components/fun_component.ts
+import { Component as Component108 } from "@wonderlandengine/api";
+var FunComponent = class extends Component108 {
+  _myParticlesSpawner;
+  start() {
+    this._myParticlesSpawner = Globals.getRootObject(this.engine).pp_getComponent(ParticlesSpawnerComponent);
+  }
+  update(dt) {
+    this._fun();
+  }
+  _fun() {
+    if (Globals.getLeftGamepad(this.engine).getButtonInfo(GamepadButtonID.SELECT).isPressed()) {
+      this._myParticlesSpawner.spawn(this.object.pp_getPosition());
+    }
+  }
+};
+__publicField(FunComponent, "TypeName", "fun");
 
 // src/playground/components/sfx_on_collision_component.js
 import { Component as Component109, PhysXComponent as PhysXComponent13 } from "@wonderlandengine/api";
@@ -59548,7 +59546,6 @@ function src_default(engine) {
   engine.registerComponent(AdjustHierarchyPhysXScaleComponent);
   engine.registerComponent(ConsoleVRToolComponent);
   engine.registerComponent(CursorButtonComponent);
-  engine.registerComponent(EasyMeshColorComponent);
   engine.registerComponent(EasyTuneToolComponent);
   engine.registerComponent(FingerCursorComponent);
   engine.registerComponent(GamepadMeshAnimatorComponent);
@@ -59568,7 +59565,6 @@ function src_default(engine) {
   engine.registerComponent(TrackedHandDrawAllJointsComponent);
   engine.registerComponent(VirtualGamepadComponent);
   engine.registerComponent(FadeViewComponent);
-  engine.registerComponent(FunComponent);
   engine.registerComponent(GrabbableSpawnerComponent);
   engine.registerComponent(LoadAudioComponent);
   engine.registerComponent(ParticlesSpawnerComponent);
@@ -59578,10 +59574,8 @@ function src_default(engine) {
   engine.registerComponent(SetActiveOnMobileComponent2);
   engine.registerComponent(SFXOnCollisionComponent);
   engine.registerComponent(SFXOnGrabThrowComponent);
-  engine.registerComponent(TargetHitCheckComponent);
   engine.registerComponent(TeleportOnTrackedHandsComponent);
   engine.registerComponent(ToggleHowToTextComponent);
-  engine.registerComponent(WaveMovementComponent);
 }
 export {
   src_default as default

@@ -17,7 +17,6 @@ import {MouseLookComponent} from '@wonderlandengine/components';
 import {AdjustHierarchyPhysXScaleComponent} from 'wle-pp';
 import {ConsoleVRToolComponent} from 'wle-pp';
 import {CursorButtonComponent} from 'wle-pp';
-import {EasyMeshColorComponent} from 'wle-pp';
 import {EasyTuneToolComponent} from 'wle-pp';
 import {FingerCursorComponent} from 'wle-pp';
 import {GamepadMeshAnimatorComponent} from 'wle-pp';
@@ -37,7 +36,6 @@ import {ToolCursorComponent} from 'wle-pp';
 import {TrackedHandDrawAllJointsComponent} from 'wle-pp';
 import {VirtualGamepadComponent} from 'wle-pp';
 import {FadeViewComponent} from './playground/components/fade_view_component.js';
-import {FunComponent} from './playground/components/fun_component.js';
 import {GrabbableSpawnerComponent} from './playground/components/grabbable_spawner_component.js';
 import {LoadAudioComponent} from './playground/components/load_audio_component.js';
 import {ParticlesSpawnerComponent} from './playground/components/particles_spawner_component.js';
@@ -47,10 +45,8 @@ import {SetActiveOnMobileComponent} from './playground/components/set_active_on_
 import {SetActiveOnMobileComponent as SetActiveOnMobileComponent1} from './playground/components/set_active_on_tracked_hands_component.js';
 import {SFXOnCollisionComponent} from './playground/components/sfx_on_collision_component.js';
 import {SFXOnGrabThrowComponent} from './playground/components/sfx_on_grab_throw_component.js';
-import {TargetHitCheckComponent} from './playground/components/target_hit_check_component.js';
 import {TeleportOnTrackedHandsComponent} from './playground/components/teleport_on_tracked_hands_component.js';
 import {ToggleHowToTextComponent} from './playground/components/toggle_how_to_text_component.js';
-import {WaveMovementComponent} from './playground/components/wave_movement_component.js';
 /* wle:auto-imports:end */
 
 export default function (engine: Readonly<WonderlandEngine>): void {
@@ -61,7 +57,6 @@ engine.registerComponent(MouseLookComponent);
 engine.registerComponent(AdjustHierarchyPhysXScaleComponent);
 engine.registerComponent(ConsoleVRToolComponent);
 engine.registerComponent(CursorButtonComponent);
-engine.registerComponent(EasyMeshColorComponent);
 engine.registerComponent(EasyTuneToolComponent);
 engine.registerComponent(FingerCursorComponent);
 engine.registerComponent(GamepadMeshAnimatorComponent);
@@ -81,7 +76,6 @@ engine.registerComponent(ToolCursorComponent);
 engine.registerComponent(TrackedHandDrawAllJointsComponent);
 engine.registerComponent(VirtualGamepadComponent);
 engine.registerComponent(FadeViewComponent);
-engine.registerComponent(FunComponent);
 engine.registerComponent(GrabbableSpawnerComponent);
 engine.registerComponent(LoadAudioComponent);
 engine.registerComponent(ParticlesSpawnerComponent);
@@ -91,9 +85,7 @@ engine.registerComponent(SetActiveOnMobileComponent);
 engine.registerComponent(SetActiveOnMobileComponent1);
 engine.registerComponent(SFXOnCollisionComponent);
 engine.registerComponent(SFXOnGrabThrowComponent);
-engine.registerComponent(TargetHitCheckComponent);
 engine.registerComponent(TeleportOnTrackedHandsComponent);
 engine.registerComponent(ToggleHowToTextComponent);
-engine.registerComponent(WaveMovementComponent);
 /* wle:auto-register:end */
 }
