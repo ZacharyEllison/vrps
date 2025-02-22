@@ -28,15 +28,6 @@ var __toESM = (mod, isNodeMode, target) => (target = mod != null ? __create(__ge
   isNodeMode || !mod || !mod.__esModule ? __defProp(target, "default", { value: mod, enumerable: true }) : target,
   mod
 ));
-var __decorateClass = (decorators, target, key, kind) => {
-  var result = kind > 1 ? void 0 : kind ? __getOwnPropDesc(target, key) : target;
-  for (var i = decorators.length - 1, decorator; i >= 0; i--)
-    if (decorator = decorators[i])
-      result = (kind ? decorator(target, key, result) : decorator(result)) || result;
-  if (kind && result)
-    __defProp(target, key, result);
-  return result;
-};
 var __publicField = (obj, key, value) => {
   __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
   return value;
@@ -32376,16 +32367,16 @@ function getObjectPropertyDescriptor(object, propertyName) {
   return propertyDescriptor;
 }
 function getObjectProperty(object, propertyName) {
-  let property39 = void 0;
+  let property36 = void 0;
   let propertyDescriptor = JSUtils.getObjectPropertyDescriptor(object, propertyName);
   if (propertyDescriptor != null) {
     if (propertyDescriptor.get != null) {
-      property39 = propertyDescriptor.get.bind(object)();
+      property36 = propertyDescriptor.get.bind(object)();
     } else {
-      property39 = propertyDescriptor.value;
+      property36 = propertyDescriptor.value;
     }
   }
-  return property39;
+  return property36;
 }
 function setObjectProperty(valueToSet, object, propertyName) {
   let propertyDescriptor = JSUtils.getObjectPropertyDescriptor(object, propertyName);
@@ -32566,17 +32557,17 @@ function isObjectByName(objectParent, objectName) {
   }
   return isObjectResult;
 }
-function isFunction(property39) {
-  return typeof property39 == "function" && !JSUtils.isClass(property39);
+function isFunction(property36) {
+  return typeof property36 == "function" && !JSUtils.isClass(property36);
 }
 var isClass = function() {
   let checkClassRegex = new RegExp("^class");
-  return function isClass2(property39) {
-    return typeof property39 == "function" && property39.prototype != null && typeof property39.prototype.constructor == "function" && property39.toString != null && typeof property39.toString == "function" && property39.toString()?.match(checkClassRegex) != null;
+  return function isClass2(property36) {
+    return typeof property36 == "function" && property36.prototype != null && typeof property36.prototype.constructor == "function" && property36.toString != null && typeof property36.toString == "function" && property36.toString()?.match(checkClassRegex) != null;
   };
 }();
-function isObject(property39) {
-  return typeof property39 == "object";
+function isObject(property36) {
+  return typeof property36 == "object";
 }
 var JSUtils = {
   getObjectPrototypes,
@@ -39175,16 +39166,16 @@ var DebugFunctionsPerformanceAnalyzer = class extends DebugFunctionsOverwriter {
   resetResults() {
     this._updateDerivatesResults();
     this._updateMaxResults();
-    for (let property39 of this._myFunctionPerformanceAnalysisResults.keys()) {
-      this._myFunctionPerformanceAnalysisResults.get(property39).reset();
+    for (let property36 of this._myFunctionPerformanceAnalysisResults.keys()) {
+      this._myFunctionPerformanceAnalysisResults.get(property36).reset();
     }
     this._myExecutionTimes.myOverheadExecutionTimeSinceLastReset = 0;
     this._myTimeOfLastReset = window.performance.now();
   }
   resetMaxResults() {
     this._myMaxTimeElapsedSinceLastReset = 0;
-    for (let property39 of this._myFunctionPerformanceAnalysisMaxResults.keys()) {
-      this._myFunctionPerformanceAnalysisMaxResults.get(property39).reset();
+    for (let property36 of this._myFunctionPerformanceAnalysisMaxResults.keys()) {
+      this._myFunctionPerformanceAnalysisMaxResults.get(property36).reset();
     }
   }
   getResults(sortOrder = DebugFunctionsPerformanceAnalyzerSortOrder.NONE) {
@@ -39265,8 +39256,8 @@ var DebugFunctionsPerformanceAnalyzer = class extends DebugFunctionsOverwriter {
   _updateDerivatesResults() {
     let timeElapsedSinceLastReset = this.getTimeElapsedSinceLastReset();
     let beforeTime = window.performance.now();
-    for (let property39 of this._myFunctionPerformanceAnalysisResults.keys()) {
-      let results = this._myFunctionPerformanceAnalysisResults.get(property39);
+    for (let property36 of this._myFunctionPerformanceAnalysisResults.keys()) {
+      let results = this._myFunctionPerformanceAnalysisResults.get(property36);
       if (timeElapsedSinceLastReset != 0) {
         results.myTotalExecutionTimePercentage = results.myTotalExecutionTime / timeElapsedSinceLastReset;
       } else {
@@ -39288,13 +39279,13 @@ var DebugFunctionsPerformanceAnalyzer = class extends DebugFunctionsOverwriter {
   _updateMaxResults() {
     let beforeTime = window.performance.now();
     this._myMaxTimeElapsedSinceLastReset = Math.max(this._myMaxTimeElapsedSinceLastReset, this.getTimeElapsedSinceLastReset());
-    for (let property39 of this._myFunctionPerformanceAnalysisResults.keys()) {
-      if (this._myFunctionPerformanceAnalysisMaxResults.has(property39)) {
-        this._myFunctionPerformanceAnalysisMaxResults.get(property39).max(this._myFunctionPerformanceAnalysisResults.get(property39));
+    for (let property36 of this._myFunctionPerformanceAnalysisResults.keys()) {
+      if (this._myFunctionPerformanceAnalysisMaxResults.has(property36)) {
+        this._myFunctionPerformanceAnalysisMaxResults.get(property36).max(this._myFunctionPerformanceAnalysisResults.get(property36));
       } else {
         let maxResults = new DebugFunctionPerformanceAnalysisResults();
-        maxResults.copy(this._myFunctionPerformanceAnalysisResults.get(property39));
-        this._myFunctionPerformanceAnalysisMaxResults.set(property39, maxResults);
+        maxResults.copy(this._myFunctionPerformanceAnalysisResults.get(property36));
+        this._myFunctionPerformanceAnalysisMaxResults.set(property36, maxResults);
       }
     }
     this._myExecutionTimes.myOverheadExecutionTimeSinceLastReset += window.performance.now() - beforeTime;
@@ -58865,53 +58856,9 @@ __publicField(FadeViewComponent, "Properties", {
   _myStartDelay: Property48.float(0)
 });
 
-// src/playground/components/grabbable_spawner_component.js
-import { Component as Component103, Property as Property49 } from "@wonderlandengine/api";
-var GrabbableSpawnerComponent = class extends Component103 {
-  start() {
-    this._myPrototypes = this._myPrototypesContainer.pp_getChildren();
-    this._myCurrentGrabbable = null;
-    this._myFirstUpdate = true;
-    this._myStartTimer = new Timer(0);
-    this._myObjectPosition = vec3_create();
-    this._myCurrentGrabbablePosition = vec3_create();
-  }
-  update(dt) {
-    if (this._myFirstUpdate) {
-      this._myFirstUpdate = false;
-      for (let prototype of this._myPrototypes) {
-        prototype.pp_setActive(false);
-      }
-    } else {
-      if (this._myStartTimer.isRunning()) {
-        this._myStartTimer.update(dt);
-        if (this._myStartTimer.isDone()) {
-          this._spawn();
-        }
-      } else {
-        if (this._myCurrentGrabbable != null) {
-          if (this.object.pp_getPosition(this._myObjectPosition).vec3_distance(this._myCurrentGrabbable.pp_getPosition(this._myCurrentGrabbablePosition)) > 0.2) {
-            this._spawn();
-          }
-        }
-      }
-    }
-  }
-  _spawn() {
-    this._myCurrentGrabbable = Math.pp_randomPick(this._myPrototypes).pp_clone();
-    this._myCurrentGrabbable.pp_setParent(this.object);
-    this._myCurrentGrabbable.pp_setPosition(this.object.pp_getPosition());
-    this._myCurrentGrabbable.pp_setActive(true);
-  }
-};
-__publicField(GrabbableSpawnerComponent, "TypeName", "grabbable-spawner");
-__publicField(GrabbableSpawnerComponent, "Properties", {
-  _myPrototypesContainer: Property49.object()
-});
-
 // src/playground/components/load_audio_component.js
-import { Component as Component104 } from "@wonderlandengine/api";
-var LoadAudioComponent = class extends Component104 {
+import { Component as Component103 } from "@wonderlandengine/api";
+var LoadAudioComponent = class extends Component103 {
   start() {
     this._myFirstUpdate = true;
   }
@@ -58963,11 +58910,11 @@ var LoadAudioComponent = class extends Component104 {
 __publicField(LoadAudioComponent, "TypeName", "load-audio");
 
 // src/playground/components/particles_spawner_component.js
-import { Component as Component106, MeshComponent as MeshComponent24, Property as Property50 } from "@wonderlandengine/api";
+import { Component as Component105, MeshComponent as MeshComponent24, Property as Property49 } from "@wonderlandengine/api";
 
 // src/playground/components/particle_component.js
-import { Component as Component105 } from "@wonderlandengine/api";
-var ParticleComponent = class extends Component105 {
+import { Component as Component104 } from "@wonderlandengine/api";
+var ParticleComponent = class extends Component104 {
   init() {
     this._myOnDoneCallback = null;
   }
@@ -59027,7 +58974,7 @@ var ParticleComponent = class extends Component105 {
 __publicField(ParticleComponent, "TypeName", "particle");
 
 // src/playground/components/particles_spawner_component.js
-var ParticlesSpawnerComponent = class extends Component106 {
+var ParticlesSpawnerComponent = class extends Component105 {
   start() {
     this._myStartFrameCountdown = 1;
   }
@@ -59092,13 +59039,13 @@ var ParticlesSpawnerComponent = class extends Component106 {
 };
 __publicField(ParticlesSpawnerComponent, "TypeName", "particles-spawner");
 __publicField(ParticlesSpawnerComponent, "Properties", {
-  _myParticlesContainer: Property50.object(),
-  _myRadius: Property50.float(0.25)
+  _myParticlesContainer: Property49.object(),
+  _myRadius: Property49.float(0.25)
 });
 
 // src/playground/components/play_music_component.js
-import { Component as Component107 } from "@wonderlandengine/api";
-var PlayMusicComponent = class extends Component107 {
+import { Component as Component106 } from "@wonderlandengine/api";
+var PlayMusicComponent = class extends Component106 {
   start() {
     this._myStarted = false;
   }
@@ -59128,8 +59075,8 @@ __publicField(PlayMusicComponent, "TypeName", "play-music");
 import { Component as Component113 } from "@wonderlandengine/api";
 
 // src/playground/components/fun_component.ts
-import { Component as Component108 } from "@wonderlandengine/api";
-var FunComponent = class extends Component108 {
+import { Component as Component107 } from "@wonderlandengine/api";
+var FunComponent = class extends Component107 {
   _myParticlesSpawner;
   start() {
     this._myParticlesSpawner = Globals.getRootObject(this.engine).pp_getComponent(ParticlesSpawnerComponent);
@@ -59144,6 +59091,50 @@ var FunComponent = class extends Component108 {
   }
 };
 __publicField(FunComponent, "TypeName", "fun");
+
+// src/playground/components/grabbable_spawner_component.js
+import { Component as Component108, Property as Property50 } from "@wonderlandengine/api";
+var GrabbableSpawnerComponent = class extends Component108 {
+  start() {
+    this._myPrototypes = this._myPrototypesContainer.pp_getChildren();
+    this._myCurrentGrabbable = null;
+    this._myFirstUpdate = true;
+    this._myStartTimer = new Timer(0);
+    this._myObjectPosition = vec3_create();
+    this._myCurrentGrabbablePosition = vec3_create();
+  }
+  update(dt) {
+    if (this._myFirstUpdate) {
+      this._myFirstUpdate = false;
+      for (let prototype of this._myPrototypes) {
+        prototype.pp_setActive(false);
+      }
+    } else {
+      if (this._myStartTimer.isRunning()) {
+        this._myStartTimer.update(dt);
+        if (this._myStartTimer.isDone()) {
+          this._spawn();
+        }
+      } else {
+        if (this._myCurrentGrabbable != null) {
+          if (this.object.pp_getPosition(this._myObjectPosition).vec3_distance(this._myCurrentGrabbable.pp_getPosition(this._myCurrentGrabbablePosition)) > 0.2) {
+            this._spawn();
+          }
+        }
+      }
+    }
+  }
+  _spawn() {
+    this._myCurrentGrabbable = Math.pp_randomPick(this._myPrototypes).pp_clone();
+    this._myCurrentGrabbable.pp_setParent(this.object);
+    this._myCurrentGrabbable.pp_setPosition(this.object.pp_getPosition());
+    this._myCurrentGrabbable.pp_setActive(true);
+  }
+};
+__publicField(GrabbableSpawnerComponent, "TypeName", "grabbable-spawner");
+__publicField(GrabbableSpawnerComponent, "Properties", {
+  _myPrototypesContainer: Property50.object()
+});
 
 // src/playground/components/sfx_on_collision_component.js
 import { Component as Component109, PhysXComponent as PhysXComponent13 } from "@wonderlandengine/api";
@@ -59395,157 +59386,12 @@ var PlaygroundGatewayComponent = class extends Component113 {
 };
 __publicField(PlaygroundGatewayComponent, "TypeName", "playground-gateway");
 
-// src/playground/components/set_active_on_mobile_component.js
-import { Component as Component114, Property as Property51 } from "@wonderlandengine/api";
-var SetActiveOnMobileComponent = class extends Component114 {
-  update(dt) {
-    if (BrowserUtils.isMobile() && !this._myActiveOnMobile || !BrowserUtils.isMobile() && this._myActiveOnMobile) {
-      this.object.pp_setActiveDescendants(false);
-    } else {
-      this.object.pp_setActiveDescendants(true);
-    }
-  }
-};
-__publicField(SetActiveOnMobileComponent, "TypeName", "set-active-on-mobile");
-__publicField(SetActiveOnMobileComponent, "Properties", {
-  _myActiveOnMobile: Property51.bool(false)
-});
-
-// src/playground/components/set_active_on_tracked_hands_component.ts
-import { Component as Component115, property as property36 } from "@wonderlandengine/api";
-var SetActiveOnMobileComponent2 = class extends Component115 {
-  _myActiveOnTrackedHands;
-  update(dt) {
-    if (Globals.getLeftHandPose(this.engine).getInputSourceType() != null && Globals.getRightHandPose(this.engine).getInputSourceType() != null) {
-      if (Globals.getLeftHandPose(this.engine).getInputSourceType() == InputSourceType.TRACKED_HAND && Globals.getRightHandPose(this.engine).getInputSourceType() == InputSourceType.TRACKED_HAND) {
-        this.object.pp_setActiveDescendants(this._myActiveOnTrackedHands);
-      } else {
-        this.object.pp_setActiveDescendants(!this._myActiveOnTrackedHands);
-      }
-    }
-  }
-};
-__publicField(SetActiveOnMobileComponent2, "TypeName", "set-active-on-tracked-hands");
-__decorateClass([
-  property36.bool(false)
-], SetActiveOnMobileComponent2.prototype, "_myActiveOnTrackedHands", 2);
-
-// src/playground/components/teleport_on_tracked_hands_component.ts
-import { Component as Component116, property as property37 } from "@wonderlandengine/api";
-var TeleportOnTrackedHandsComponent = class extends Component116 {
-  _myTeleportTargetObject;
-  _myUsingTrackedHands = false;
-  _myDelayFrameCountdown = 3;
-  update(dt) {
-    if (this._myDelayFrameCountdown > 0) {
-      this._myDelayFrameCountdown--;
-    }
-    if (XRUtils.isSessionActive(this.engine) && Globals.getPlayerLocomotion(this.engine)?.getPlayerHeadManager().isSynced() && this._myDelayFrameCountdown == 0) {
-      if (Globals.getLeftHandPose(this.engine).getInputSourceType() != null && Globals.getRightHandPose(this.engine).getInputSourceType() != null) {
-        if (Globals.getLeftHandPose(this.engine).getInputSourceType() == InputSourceType.TRACKED_HAND && Globals.getRightHandPose(this.engine).getInputSourceType() == InputSourceType.TRACKED_HAND) {
-          if (!this._myUsingTrackedHands) {
-            this._myUsingTrackedHands = true;
-            Globals.getPlayerLocomotion(this.engine).getPlayerTransformManager().forceTeleportAndReset(this._myTeleportTargetObject.pp_getPosition(), this._myTeleportTargetObject.pp_getRotationQuat());
-          }
-        } else if (Globals.getLeftHandPose(this.engine).getInputSourceType() != InputSourceType.TRACKED_HAND && Globals.getRightHandPose(this.engine).getInputSourceType() != InputSourceType.TRACKED_HAND) {
-          this._myUsingTrackedHands = false;
-        }
-      }
-    }
-  }
-  onActivate() {
-    XRUtils.registerSessionStartEventListener(this, this._onXRSessionStart.bind(this), false, false, this.engine);
-  }
-  onDeactivate() {
-    XRUtils.unregisterSessionStartEventListener(this, this.engine);
-  }
-  _onXRSessionStart() {
-    this._myDelayFrameCountdown = 3;
-    this._myUsingTrackedHands = false;
-  }
-};
-__publicField(TeleportOnTrackedHandsComponent, "TypeName", "teleport-on-tracked-hands");
-__decorateClass([
-  property37.object()
-], TeleportOnTrackedHandsComponent.prototype, "_myTeleportTargetObject", 2);
-
-// src/playground/components/toggle_how_to_text_component.ts
-import { Component as Component117, PhysXComponent as PhysXComponent15, property as property38, TextComponent as TextComponent19 } from "@wonderlandengine/api";
-var ToggleHowToTextComponent = class extends Component117 {
-  _myTextObject;
-  _myAnimatedScale;
-  _myTextObjectInitialPositionLocal;
-  _myTextPhysXComponent;
-  _myTextVisible = true;
-  init() {
-    this._myTextObjectInitialPositionLocal = this._myTextObject.pp_getPositionLocal();
-    this._myTextPhysXComponent = this._myTextObject.pp_getComponent(PhysXComponent15);
-    const textComponents = this.object.pp_getComponents(TextComponent19);
-    let visible = true;
-    const switchButtonTextHandler = {
-      onUp(cursorButtonComponent, cursorComponent, isSecondaryCursor) {
-        if (isSecondaryCursor)
-          return false;
-        let textToSet = "Show";
-        if (visible) {
-          visible = false;
-        } else {
-          visible = true;
-          textToSet = "Hide";
-        }
-        for (const textComponent of textComponents) {
-          textComponent.text = textToSet;
-        }
-        return false;
-      }
-    };
-    CursorButtonComponent.addButtonActionHandler("switch-button-text", switchButtonTextHandler, this.engine);
-  }
-  start() {
-    const animatedScaleParams = new AnimatedNumberParams();
-    animatedScaleParams.myInitialValue = 1;
-    animatedScaleParams.myAnimationSeconds = 0.5;
-    this._myAnimatedScale = new AnimatedNumber(animatedScaleParams);
-  }
-  update(dt) {
-    if (!this._myAnimatedScale.isDone()) {
-      this._myAnimatedScale.update(dt);
-      this._myTextObject.pp_resetScaleLocal();
-      this._myTextObject.pp_scaleObject(this._myAnimatedScale.getCurrentValue());
-      if (this._myAnimatedScale.isDone()) {
-        if (!this._myTextVisible) {
-          this._myTextObject.pp_translate(vec3_create(0, -1e5, 0));
-        }
-      }
-    }
-  }
-  onUp(cursorButtonComponent, cursorComponent, isSecondaryCursor) {
-    if (isSecondaryCursor)
-      return false;
-    if (!this._myTextVisible) {
-      this._myAnimatedScale.setTargetValue(1);
-    } else {
-      this._myAnimatedScale.setTargetValue(0);
-    }
-    this._myTextObject.pp_setPositionLocal(this._myTextObjectInitialPositionLocal);
-    this._myTextVisible = !this._myTextVisible;
-    this._myTextPhysXComponent.active = this._myTextVisible;
-    return false;
-  }
-};
-__publicField(ToggleHowToTextComponent, "TypeName", "toggle-how-to-text");
-__decorateClass([
-  property38.object()
-], ToggleHowToTextComponent.prototype, "_myTextObject", 2);
-
 // src/index.ts
 function src_default(engine) {
   engine.registerComponent(Cursor);
-  engine.registerComponent(CursorTarget);
+  engine.registerComponent(ImageTexture);
   engine.registerComponent(MouseLookComponent);
-  engine.registerComponent(AdjustHierarchyPhysXScaleComponent);
   engine.registerComponent(ConsoleVRToolComponent);
-  engine.registerComponent(CursorButtonComponent);
   engine.registerComponent(EasyTuneToolComponent);
   engine.registerComponent(FingerCursorComponent);
   engine.registerComponent(GamepadMeshAnimatorComponent);
@@ -59555,8 +59401,6 @@ function src_default(engine) {
   engine.registerComponent(PPGatewayComponent);
   engine.registerComponent(PlayerLocomotionComponent);
   engine.registerComponent(ResetLocalTransformComponent);
-  engine.registerComponent(ScaleOnSpawnComponent);
-  engine.registerComponent(SetActiveComponent);
   engine.registerComponent(SetHandLocalTransformComponent);
   engine.registerComponent(SetHeadLocalTransformComponent);
   engine.registerComponent(SpatialAudioListenerComponent);
@@ -59565,17 +59409,11 @@ function src_default(engine) {
   engine.registerComponent(TrackedHandDrawAllJointsComponent);
   engine.registerComponent(VirtualGamepadComponent);
   engine.registerComponent(FadeViewComponent);
-  engine.registerComponent(GrabbableSpawnerComponent);
   engine.registerComponent(LoadAudioComponent);
   engine.registerComponent(ParticlesSpawnerComponent);
   engine.registerComponent(PlayMusicComponent);
   engine.registerComponent(PlaygroundGatewayComponent);
-  engine.registerComponent(SetActiveOnMobileComponent);
-  engine.registerComponent(SetActiveOnMobileComponent2);
-  engine.registerComponent(SFXOnCollisionComponent);
   engine.registerComponent(SFXOnGrabThrowComponent);
-  engine.registerComponent(TeleportOnTrackedHandsComponent);
-  engine.registerComponent(ToggleHowToTextComponent);
 }
 export {
   src_default as default

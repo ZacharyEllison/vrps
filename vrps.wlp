@@ -1295,6 +1295,65 @@
         "97387186-889f-4768-81e0-fe144b612a2d": {
             "name": "Cursor Pointer",
             "parent": "8f116677-15c2-4d71-a7dc-90239c83ece8"
+        },
+        "1FBFB83F-AE5E-454D-B97B-1D764FEEC8BC": {
+            "name": "Cow",
+            "parent": "526adb29-57d2-4b09-ac41-5efed44996a2",
+            "translation": [
+                2.1709671,
+                0.0741029,
+                -1.3812512
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
+            ],
+            "components": [
+                {
+                    "type": "physx",
+                    "physx": {
+                        "shape": "box",
+                        "translationOffset": [
+                            0.0,
+                            0.6,
+                            0.1
+                        ],
+                        "box": {
+                            "extents": [
+                                0.3499999,
+                                0.6,
+                                0.8
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "BB2EE750-4D37-429E-A5E3-E9BB4DC5AC9A": {
+            "link": {
+                "name": "Cow 01",
+                "file": "assets\\models\\playground\\Cow 01.fbx"
+            },
+            "parent": "1FBFB83F-AE5E-454D-B97B-1D764FEEC8BC",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "material": "821469F7-53B9-48FA-B3DB-276B72E93016",
+                        "mesh": "B2861EAD-B385-436C-8F1A-138654E6453A"
+                    }
+                },
+                {
+                    "type": "image-texture"
+                }
+            ]
         }
     },
     "meshes": {
@@ -1489,6 +1548,12 @@
                 "name": "mesh_3",
                 "file": "assets\\models\\playground\\The_Sword.fbx"
             }
+        },
+        "B2861EAD-B385-436C-8F1A-138654E6453A": {
+            "link": {
+                "name": "mesh_0",
+                "file": "assets\\models\\playground\\Cow 01.fbx"
+            }
         }
     },
     "images": {
@@ -1499,6 +1564,12 @@
             },
             "compression": "none",
             "stream": false
+        },
+        "B962F64E-E789-4D30-B079-D2983FA1A30F": {
+            "link": {
+                "name": "Cow 01_albedo.png",
+                "file": "assets\\textures\\Cow 01_albedo.png"
+            }
         }
     },
     "textures": {
@@ -1518,6 +1589,21 @@
             "link": {
                 "name": "base_color_texture",
                 "file": "assets\\models\\playground\\Stone-well.fbx"
+            }
+        },
+        "077851EB-454E-401B-B02C-BE99E461110C": {
+            "link": {
+                "name": "base_color_texture",
+                "file": "assets\\models\\playground\\Cow 01.fbx"
+            }
+        },
+        "FD4B03A6-A117-42E7-86C7-EFC3392099F0": {
+            "name": "texture"
+        },
+        "89F50758-6F7D-41BE-B261-B826BC2BC656": {
+            "link": {
+                "name": "Cow 01_albedo.png",
+                "file": "assets\\textures\\Cow 01_albedo.png"
             }
         }
     },
@@ -2088,6 +2174,45 @@
                 "name": "Material.001",
                 "file": "assets\\models\\playground\\scene.gltf"
             }
+        },
+        "821469F7-53B9-48FA-B3DB-276B72E93016": {
+            "link": {
+                "name": "Mat_Cow 01",
+                "file": "assets\\models\\playground\\Cow 01.fbx"
+            },
+            "Phong": {
+                "ambientColor": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "diffuseTexture": "89F50758-6F7D-41BE-B261-B826BC2BC656",
+                "diffuseColor": [
+                    0.8,
+                    0.8,
+                    0.8,
+                    1.0
+                ],
+                "specularColor": [
+                    0.2,
+                    0.2,
+                    0.2,
+                    0.0
+                ],
+                "emissiveColor": [
+                    0.0,
+                    0.0,
+                    0.0,
+                    1.0
+                ],
+                "shininess": 25
+            },
+            "pipeline": "89a3238c-ae6c-41f3-a9af-4fd4c6e1564b"
+        },
+        "993BAB3A-2756-4C47-BF02-48464A90B09D": {
+            "name": "material",
+            "pipeline": "6e3da297-ea04-4d73-a0c7-3889145038df"
         }
     },
     "animations": {},
@@ -2272,6 +2397,15 @@
             "fileName": "assets/models/playground/scene.gltf",
             "importerName": "",
             "importPhysicalAsPhongMaterials": true
+        },
+        "540670B0-BE7F-463A-94DF-215B4717D83A": {
+            "fileName": "assets/models/playground/Cow 01.fbx",
+            "importerName": "",
+            "importPhysicalAsPhongMaterials": true
+        },
+        "6BA03274-67C8-4C10-9CCE-C838FE0A196A": {
+            "fileName": "assets/textures/Cow 01_albedo.png",
+            "importerName": ""
         }
     },
     "languages": {},
