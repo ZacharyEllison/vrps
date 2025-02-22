@@ -59548,6 +59548,7 @@ function src_default(engine) {
   engine.registerComponent(AdjustHierarchyPhysXScaleComponent);
   engine.registerComponent(ConsoleVRToolComponent);
   engine.registerComponent(CursorButtonComponent);
+  engine.registerComponent(EasyMeshColorComponent);
   engine.registerComponent(EasyTuneToolComponent);
   engine.registerComponent(FingerCursorComponent);
   engine.registerComponent(GamepadMeshAnimatorComponent);

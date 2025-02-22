@@ -1,5 +1,8 @@
 // src/app.ts
-import { loadRuntime, LogLevel } from "@wonderlandengine/api";
+import {
+  loadRuntime,
+  LogLevel
+} from "@wonderlandengine/api";
 var waitWindowLoad = new Promise((resolve) => {
   if (document.readyState == "complete") {
     resolve();
@@ -36,7 +39,11 @@ engine.onLoadingScreenEnd.once(() => {
     setTimeout(() => el.remove(), 2e3);
 });
 function requestSession(mode) {
-  engine.requestXRSession(mode, Constants.WebXRRequiredFeatures, Constants.WebXROptionalFeatures).catch((e) => console.error(e));
+  engine.requestXRSession(
+    mode,
+    Constants.WebXRRequiredFeatures,
+    Constants.WebXROptionalFeatures
+  ).catch((e) => console.error(e));
 }
 function setupButtonsXR() {
   const arButton = document.getElementById("ar-button");
@@ -53,7 +60,9 @@ function setupButtonsXR() {
 setupButtonsXR();
 var sceneLoadDelaySeconds = 0;
 if (sceneLoadDelaySeconds > 0) {
-  await new Promise((resolve) => setTimeout(resolve, sceneLoadDelaySeconds * 1e3));
+  await new Promise(
+    (resolve) => setTimeout(resolve, sceneLoadDelaySeconds * 1e3)
+  );
 }
 try {
   await engine.loadMainScene(`${Constants.ProjectName}.bin`);

@@ -70,7 +70,8 @@
                     "type": "view"
                 },
                 {
-                    "type": "mouse-look"
+                    "type": "mouse-look",
+                    "active": true
                 },
                 {
                     "type": "cursor",
@@ -82,7 +83,8 @@
                         "cursorObject": null,
                         "rayCastMode": "physx",
                         "maxDistance": 1.5
-                    }
+                    },
+                    "active": true
                 }
             ]
         },
@@ -2901,6 +2903,72 @@
                 0.0,
                 0.0099995
             ]
+        },
+        "9BCE99C3-4986-450C-AAEB-87215C4D6798": {
+            "name": "Well",
+            "parent": "526adb29-57d2-4b09-ac41-5efed44996a2",
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "mesh": "CA7402E5-3DA2-4987-8023-86E1F095ECA5"
+                    }
+                }
+            ],
+            "translation": [
+                -2.0314579,
+                0.2010218,
+                -7.6218466
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "scaling": [
+                0.5,
+                0.5,
+                0.5
+            ]
+        },
+        "AC4EB725-69BA-487D-A602-14C0D5FADE65": {
+            "link": {
+                "name": "Stone-well",
+                "file": "assets\\models\\playground\\Stone-well.fbx"
+            },
+            "parent": "9BCE99C3-4986-450C-AAEB-87215C4D6798",
+            "translation": [
+                0.1215219,
+                0.5088495,
+                0.1812722
+            ],
+            "rotation": [
+                -0.7071066,
+                0.0,
+                0.0,
+                0.7071068
+            ],
+            "scaling": [
+                1.0,
+                0.9999957,
+                0.9999957
+            ],
+            "components": [
+                {
+                    "type": "mesh",
+                    "mesh": {
+                        "material": "C41A8D19-067C-479F-8779-54C34A54A499",
+                        "mesh": "CA7402E5-3DA2-4987-8023-86E1F095ECA5"
+                    }
+                },
+                {
+                    "type": "pp-easy-mesh-color",
+                    "pp-easy-mesh-color": {
+                        "_myColorType": "Color"
+                    }
+                }
+            ]
         }
     },
     "meshes": {
@@ -3059,6 +3127,18 @@
                 "name": "Wondermelon Convex Mesh Fit",
                 "file": "assets\\models\\playground\\wondermelon.fbx"
             }
+        },
+        "F3A37AAE-83DD-43F9-8BE1-C98B77220C14": {
+            "link": {
+                "name": "mesh_0",
+                "file": "assets\\models\\playground\\Orange Fruit 00.fbx"
+            }
+        },
+        "CA7402E5-3DA2-4987-8023-86E1F095ECA5": {
+            "link": {
+                "name": "mesh_0",
+                "file": "assets\\models\\playground\\Stone-well.fbx"
+            }
         }
     },
     "images": {
@@ -3076,6 +3156,18 @@
             "link": {
                 "name": "icon.png",
                 "file": "assets\\textures\\pp\\icon.png"
+            }
+        },
+        "758BF08D-A8FE-4B62-AC87-54577BA16932": {
+            "link": {
+                "name": "base_color_texture",
+                "file": "assets\\models\\playground\\Orange Fruit 00.fbx"
+            }
+        },
+        "2CAA7108-9EF5-44A9-AFDD-A80F0AFFCE3E": {
+            "link": {
+                "name": "base_color_texture",
+                "file": "assets\\models\\playground\\Stone-well.fbx"
             }
         }
     },
@@ -3585,6 +3677,19 @@
                     1.0
                 ]
             }
+        },
+        "C695D87C-D2D5-47B2-A65F-1B7AF65E3CCC": {
+            "link": {
+                "name": "Mat_Orange Fruit 00",
+                "file": "assets\\models\\playground\\Orange Fruit 00.fbx"
+            }
+        },
+        "C41A8D19-067C-479F-8779-54C34A54A499": {
+            "link": {
+                "name": "Mat_Stone-well",
+                "file": "assets\\models\\playground\\Stone-well.fbx"
+            },
+            "pipeline": "9104535f-2c03-4d28-8052-347735487f59"
         }
     },
     "animations": {},
@@ -3749,6 +3854,16 @@
         "88ef22f2-9f2d-4c27-83b8-70f49921b282": {
             "fileName": "assets/textures/pp/icon.png",
             "importerName": ""
+        },
+        "424784A7-0A8B-4AD7-A9FD-FF2DBA26B1DF": {
+            "fileName": "assets/models/playground/Orange Fruit 00.fbx",
+            "importerName": "",
+            "importPhysicalAsPhongMaterials": true
+        },
+        "362DD419-F2C8-47A8-AC83-BB5DF5EAF93F": {
+            "fileName": "assets/models/playground/Stone-well.fbx",
+            "importerName": "",
+            "importPhysicalAsPhongMaterials": true
         }
     },
     "languages": {},
@@ -3758,7 +3873,7 @@
             "version": [
                 1,
                 3,
-                1
+                2
             ],
             "description": "Playground template project for the Wonderland Engine",
             "type": "game",

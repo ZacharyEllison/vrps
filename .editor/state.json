@@ -1,7 +1,7 @@
 {
     "views": {
         "console": {
-            "showInfo": true,
+            "showInfo": false,
             "showWarnings": true,
             "showErrors": true
         },
@@ -29,13 +29,13 @@
         "Scene Outline": true,
         "Properties": true,
         "Project Settings": false,
-        "Resources": false,
+        "Resources": true,
         "Project Data": false,
         "Benchmark": false,
         "Profile": false,
         "Preferences": false,
         "Localization": false,
-        "Animation Editor": true,
+        "Animation Editor": false,
         "Resource Tree": false,
         "Plugins": false
     }
