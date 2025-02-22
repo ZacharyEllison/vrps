@@ -124,7 +124,10 @@
             "parent": "be12c4ed-e083-4ba0-b305-1e17ca69fe19",
             "components": [
                 {
-                    "type": "view"
+                    "type": "view",
+                    "view": {
+                        "projectionType": "perspective"
+                    }
                 },
                 {
                     "type": "input",
@@ -847,8 +850,14 @@
                 13.0
             ],
             "scaling": [
-                7.5,
+                10.0459146,
                 5.0,
+                1.0
+            ],
+            "rotation": [
+                0.0,
+                0.0,
+                0.0,
                 1.0
             ]
         },
@@ -1148,11 +1157,14 @@
                 0.0099995
             ]
         },
-        "C901EDB7-B5A6-430E-A042-9ACFC6AA9B36": {
-            "link": {
-                "name": "Light",
-                "file": "assets\\models\\playground\\The_Sword.fbx"
-            }
+        "46bd6bea-d4f2-4c49-b62a-ca8098d89c81": {
+            "name": "Gamepad Text",
+            "parent": "ecaac23c-a887-4bfd-babb-9606a9278f9f",
+            "components": [
+                {
+                    "type": "set-active-on-tracked-hands"
+                }
+            ]
         },
         "53b00032-fde3-4b7e-a1c1-c9865f6cbd34": {
             "name": "Tracked Hand Text",
@@ -1208,7 +1220,7 @@
                         "simulate": true,
                         "static": false,
                         "kinematic": false,
-                        "bounciness": 2.0
+                        "bounciness": 1.0
                     }
                 }
             ]
@@ -2663,13 +2675,43 @@
                 0.2
             ]
         },
-        "46bd6bea-d4f2-4c49-b62a-ca8098d89c81": {
-            "name": "Gamepad Text",
-            "parent": "ecaac23c-a887-4bfd-babb-9606a9278f9f",
+        "72013F8C-95E8-4E21-A081-9D3A5D2E87CF": {
+            "name": "Wall",
+            "parent": "62d70d96-7b4d-451c-a863-0b9947b0fdec",
             "components": [
                 {
-                    "type": "set-active-on-tracked-hands"
+                    "type": "physx",
+                    "physx": {
+                        "shape": "box",
+                        "box": {
+                            "extents": [
+                                14.0,
+                                5.0,
+                                1.0
+                            ]
+                        },
+                        "groups": 2,
+                        "block": 5,
+                        "gravity": false,
+                        "static": true
+                    }
                 }
+            ],
+            "translation": [
+                3.379375357326353e-8,
+                12.0,
+                0.0000052
+            ],
+            "rotation": [
+                -0.5,
+                0.5,
+                0.5,
+                0.5
+            ],
+            "scaling": [
+                13.9998455,
+                6.0,
+                0.9999876
             ]
         }
     },
