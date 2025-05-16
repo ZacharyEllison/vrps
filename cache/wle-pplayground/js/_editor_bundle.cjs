@@ -2830,8 +2830,10 @@
     MeshManager: () => MeshManager,
     MeshSkinningType: () => MeshSkinningType,
     MorphTargets: () => MorphTargets,
-    Object: () => Object3D,
-    Object3D: () => Object3D,
+    Object: () => Object3D2,
+    Object3D: () => Object3D2,
+    ParticleEffect: () => ParticleEffect,
+    ParticleEffectComponent: () => ParticleEffectComponent,
     PhysXComponent: () => PhysXComponent,
     Physics: () => Physics,
     Prefab: () => Prefab,
@@ -2856,7 +2858,7 @@
     Type: () => Type,
     VerticalAlignment: () => VerticalAlignment,
     ViewComponent: () => ViewComponent,
-    WASM: () => WASM2,
+    WASM: () => WASM,
     WebXR: () => WebXR,
     WonderlandEngine: () => WonderlandEngine,
     XRSessionState: () => XRSessionState,
@@ -2891,7 +2893,6 @@
       (decorator = decorators[i]) && (result = (kind ? decorator(target, key, result) : decorator(result)) || result);
     return kind && result && __defProp2(target, key, result), result;
   };
-  var simd = async () => WebAssembly.validate(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 5, 1, 96, 0, 1, 123, 3, 2, 1, 0, 10, 10, 1, 8, 0, 65, 0, 253, 15, 253, 98, 11]));
   var threads = () => (async (e) => {
     try {
       return typeof MessageChannel < "u" && new MessageChannel().port1.postMessage(new SharedArrayBuffer(1)), WebAssembly.validate(e);
@@ -2899,7 +2900,7 @@
       return false;
     }
   })(new Uint8Array([0, 97, 115, 109, 1, 0, 0, 0, 1, 4, 1, 96, 0, 0, 3, 2, 1, 0, 5, 4, 1, 3, 1, 1, 10, 11, 1, 9, 0, 65, 0, 254, 16, 2, 0, 26, 11]));
-  var Type = ((Type2) => (Type2[Type2.Native = 0] = "Native", Type2[Type2.Bool = 1] = "Bool", Type2[Type2.Int = 2] = "Int", Type2[Type2.Float = 3] = "Float", Type2[Type2.String = 4] = "String", Type2[Type2.Enum = 5] = "Enum", Type2[Type2.Object = 6] = "Object", Type2[Type2.Mesh = 7] = "Mesh", Type2[Type2.Texture = 8] = "Texture", Type2[Type2.Material = 9] = "Material", Type2[Type2.Animation = 10] = "Animation", Type2[Type2.Skin = 11] = "Skin", Type2[Type2.Color = 12] = "Color", Type2[Type2.Vector2 = 13] = "Vector2", Type2[Type2.Vector3 = 14] = "Vector3", Type2[Type2.Vector4 = 15] = "Vector4", Type2))(Type || {});
+  var Type = ((Type2) => (Type2[Type2.Native = 0] = "Native", Type2[Type2.Bool = 1] = "Bool", Type2[Type2.Int = 2] = "Int", Type2[Type2.Float = 3] = "Float", Type2[Type2.String = 4] = "String", Type2[Type2.Enum = 5] = "Enum", Type2[Type2.Object = 6] = "Object", Type2[Type2.Mesh = 7] = "Mesh", Type2[Type2.Texture = 8] = "Texture", Type2[Type2.Material = 9] = "Material", Type2[Type2.Animation = 10] = "Animation", Type2[Type2.Skin = 11] = "Skin", Type2[Type2.Color = 12] = "Color", Type2[Type2.Vector2 = 13] = "Vector2", Type2[Type2.Vector3 = 14] = "Vector3", Type2[Type2.Vector4 = 15] = "Vector4", Type2[Type2.Array = 16] = "Array", Type2[Type2.Record = 17] = "Record", Type2[Type2.ParticleEffect = 18] = "ParticleEffect", Type2[Type2.Count = 19] = "Count", Type2))(Type || {});
   var DefaultPropertyCloner = class {
     clone(type, value) {
       switch (type) {
@@ -2908,6 +2909,17 @@
         case 14:
         case 15:
           return value.slice();
+        case 17: {
+          let record = value;
+          if (!record.Properties)
+            return this;
+          let result = new record();
+          for (let key in record.Properties) {
+            let prop = record.Properties[key];
+            result[key] = defaultPropertyCloner.clone(prop.type, prop.default);
+          }
+          return result;
+        }
         default:
           return value;
       }
@@ -2936,6 +2948,8 @@
     return { type: 10, default: null, required: opts?.required ?? false };
   }, skin(opts) {
     return { type: 11, default: null, required: opts?.required ?? false };
+  }, particleEffect(opts) {
+    return { type: 18, default: null, required: opts?.required ?? false };
   }, color(r = 0, g = 0, b = 0, a = 1) {
     return { type: 12, default: [r, g, b, a] };
   }, vector2(x = 0, y = 0) {
@@ -2944,6 +2958,10 @@
     return { type: 14, default: [x, y, z] };
   }, vector4(x = 0, y = 0, z = 0, w = 0) {
     return { type: 15, default: [x, y, z, w] };
+  }, record(definition) {
+    return { type: 17, record: definition, default: definition };
+  }, array(element) {
+    return { type: 16, element, default: void 0 };
   } };
   function propertyDecorator(data) {
     return function(target, propertyKey) {
@@ -3176,6 +3194,241 @@
       }
     }
   };
+  function decode(data, tagger = (_, value) => value, options = {}) {
+    let reader = new CBORReader(data);
+    reader.tagger = tagger, options.dictionary && (reader.dictionary = options.dictionary);
+    let ret = reader.decodeItem();
+    if (reader.offset !== data.byteLength)
+      throw new Error("CBORError: Remaining bytes");
+    return ret;
+  }
+  var CBORType = ((CBORType2) => (CBORType2[CBORType2.Array = 0] = "Array", CBORType2[CBORType2.Record = 1] = "Record", CBORType2[CBORType2.Constant = 2] = "Constant", CBORType2[CBORType2.Native = 3] = "Native", CBORType2))(CBORType || {});
+  function getType(typeInfo) {
+    let majorType = typeInfo >> 5, additionalInformation = typeInfo & 31;
+    switch (majorType) {
+      case 4:
+        return 0;
+      case 5:
+        return 1;
+      case 7:
+        return 2;
+    }
+    return 3;
+  }
+  function isUndefined(type, length11) {
+    return type === 2 && length11 === 23;
+  }
+  var CBORReader = class {
+    dataView;
+    data;
+    offset;
+    tagger = (_, value) => value;
+    dictionary = "object";
+    constructor(data) {
+      this.dataView = new DataView(data.buffer, data.byteOffset, data.byteLength), this.data = data, this.offset = 0;
+    }
+    readTypeInfo() {
+      return this.readUint8();
+    }
+    readArrayLength(typeInfo) {
+      let majorType = typeInfo >> 5, additionalInformation = typeInfo & 31, length11 = this.readLength(additionalInformation);
+      if (length11 < 0 && (majorType < 2 || 6 < majorType))
+        throw new Error("CBORError: Invalid length");
+      return length11;
+    }
+    readItem(typeInfo, inputLen = null) {
+      let majorType = typeInfo >> 5, additionalInformation = typeInfo & 31, i;
+      if (majorType === 7)
+        switch (additionalInformation) {
+          case 25:
+            return this.readFloat16();
+          case 26:
+            return this.readFloat32();
+          case 27:
+            return this.readFloat64();
+        }
+      let length11 = inputLen === null ? this.readLength(additionalInformation) : inputLen;
+      if (length11 < 0 && (majorType < 2 || 6 < majorType))
+        throw new Error("CBORError: Invalid length");
+      switch (majorType) {
+        case 0:
+          return length11;
+        case 1:
+          return typeof length11 == "number" ? -1 - length11 : -1n - length11;
+        case 2: {
+          if (length11 < 0) {
+            let elements = [], fullArrayLength = 0;
+            for (; (length11 = this.readIndefiniteStringLength(majorType)) >= 0; )
+              fullArrayLength += length11, elements.push(this.readArrayBuffer(length11));
+            let fullArray = new Uint8Array(fullArrayLength), fullArrayOffset = 0;
+            for (i = 0; i < elements.length; ++i)
+              fullArray.set(elements[i], fullArrayOffset), fullArrayOffset += elements[i].length;
+            return fullArray;
+          }
+          return this.readArrayBuffer(length11).slice();
+        }
+        case 3: {
+          let utf16data = [];
+          if (length11 < 0)
+            for (; (length11 = this.readIndefiniteStringLength(majorType)) >= 0; )
+              this.appendUtf16Data(utf16data, length11);
+          else
+            this.appendUtf16Data(utf16data, length11);
+          let string = "", DECODE_CHUNK_SIZE = 8192;
+          for (i = 0; i < utf16data.length; i += DECODE_CHUNK_SIZE)
+            string += String.fromCharCode.apply(null, utf16data.slice(i, i + DECODE_CHUNK_SIZE));
+          return string;
+        }
+        case 4: {
+          let retArray;
+          if (length11 < 0)
+            for (retArray = []; !this.readBreak(); )
+              retArray.push(this.decodeItem());
+          else
+            for (retArray = new Array(length11), i = 0; i < length11; ++i)
+              retArray[i] = this.decodeItem();
+          return retArray;
+        }
+        case 5: {
+          if (this.dictionary === "map") {
+            let retMap = /* @__PURE__ */ new Map();
+            for (i = 0; i < length11 || length11 < 0 && !this.readBreak(); ++i) {
+              let key = this.decodeItem();
+              if (retMap.has(key))
+                throw new Error("CBORError: Duplicate key encountered");
+              retMap.set(key, this.decodeItem());
+            }
+            return retMap;
+          }
+          let retObject = {};
+          for (i = 0; i < length11 || length11 < 0 && !this.readBreak(); ++i) {
+            let key = this.decodeItem();
+            if (Object.prototype.hasOwnProperty.call(retObject, key))
+              throw new Error("CBORError: Duplicate key encountered");
+            retObject[key] = this.decodeItem();
+          }
+          return retObject;
+        }
+        case 6: {
+          let value = this.decodeItem(), tag = length11;
+          if (value instanceof Uint8Array)
+            switch (tag) {
+              case 2:
+              case 3:
+                let num = value.reduce((acc, n) => (acc << 8n) + BigInt(n), 0n);
+                return tag == 3 && (num = -1n - num), num;
+              case 64:
+                return value;
+              case 72:
+                return new Int8Array(value.buffer);
+              case 69:
+                return new Uint16Array(value.buffer);
+              case 77:
+                return new Int16Array(value.buffer);
+              case 70:
+                return new Uint32Array(value.buffer);
+              case 78:
+                return new Int32Array(value.buffer);
+              case 71:
+                return new BigUint64Array(value.buffer);
+              case 79:
+                return new BigInt64Array(value.buffer);
+              case 85:
+                return new Float32Array(value.buffer);
+              case 86:
+                return new Float64Array(value.buffer);
+            }
+          return this.tagger(tag, value);
+        }
+        case 7:
+          switch (length11) {
+            case 20:
+              return false;
+            case 21:
+              return true;
+            case 22:
+              return null;
+            case 23:
+              return;
+            default:
+              return length11;
+          }
+      }
+    }
+    decodeItem() {
+      let initialByte = this.readUint8();
+      return this.readItem(initialByte);
+    }
+    readArrayBuffer(length11) {
+      return this.commitRead(length11, this.data.subarray(this.offset, this.offset + length11));
+    }
+    readFloat16() {
+      let POW_2_24 = 5960464477539063e-23, tempArrayBuffer = new ArrayBuffer(4), tempDataView = new DataView(tempArrayBuffer), value = this.readUint16(), sign2 = value & 32768, exponent = value & 31744, fraction = value & 1023;
+      if (exponent === 31744)
+        exponent = 261120;
+      else if (exponent !== 0)
+        exponent += 114688;
+      else if (fraction !== 0)
+        return (sign2 ? -1 : 1) * fraction * POW_2_24;
+      return tempDataView.setUint32(0, sign2 << 16 | exponent << 13 | fraction << 13), tempDataView.getFloat32(0);
+    }
+    readFloat32() {
+      return this.commitRead(4, this.dataView.getFloat32(this.offset));
+    }
+    readFloat64() {
+      return this.commitRead(8, this.dataView.getFloat64(this.offset));
+    }
+    readUint8() {
+      return this.commitRead(1, this.data[this.offset]);
+    }
+    readUint16() {
+      return this.commitRead(2, this.dataView.getUint16(this.offset));
+    }
+    readUint32() {
+      return this.commitRead(4, this.dataView.getUint32(this.offset));
+    }
+    readUint64() {
+      return this.commitRead(8, this.dataView.getBigUint64(this.offset));
+    }
+    readBreak() {
+      return this.data[this.offset] !== 255 ? false : (this.offset += 1, true);
+    }
+    readLength(additionalInformation) {
+      if (additionalInformation < 24)
+        return additionalInformation;
+      if (additionalInformation === 24)
+        return this.readUint8();
+      if (additionalInformation === 25)
+        return this.readUint16();
+      if (additionalInformation === 26)
+        return this.readUint32();
+      if (additionalInformation === 27) {
+        let integer = this.readUint64();
+        return integer <= Number.MAX_SAFE_INTEGER ? Number(integer) : integer;
+      }
+      if (additionalInformation === 31)
+        return -1;
+      throw new Error("CBORError: Invalid length encoding");
+    }
+    readIndefiniteStringLength(majorType) {
+      let initialByte = this.readUint8();
+      if (initialByte === 255)
+        return -1;
+      let length11 = this.readLength(initialByte & 31);
+      if (length11 < 0 || initialByte >> 5 !== majorType)
+        throw new Error("CBORError: Invalid indefinite length element");
+      return Number(length11);
+    }
+    appendUtf16Data(utf16data, length11) {
+      for (let i = 0; i < length11; ++i) {
+        let value = this.readUint8();
+        value & 128 && (value < 224 ? (value = (value & 31) << 6 | this.readUint8() & 63, length11 -= 1) : value < 240 ? (value = (value & 15) << 12 | (this.readUint8() & 63) << 6 | this.readUint8() & 63, length11 -= 2) : (value = (value & 7) << 18 | (this.readUint8() & 63) << 12 | (this.readUint8() & 63) << 6 | this.readUint8() & 63, length11 -= 3)), value < 65536 ? utf16data.push(value) : (value -= 65536, utf16data.push(55296 | value >> 10), utf16data.push(56320 | value & 1023));
+      }
+    }
+    commitRead(length11, value) {
+      return this.offset += length11, value;
+    }
+  };
   var ComponentManagers = class {
     animation = -1;
     collision = -1;
@@ -3188,7 +3441,7 @@
     _scene;
     constructor(scene) {
       this._scene = scene;
-      let wasm = this._scene.engine.wasm, native = [AnimationComponent, CollisionComponent, InputComponent, LightComponent, MeshComponent, PhysXComponent, TextComponent, ViewComponent];
+      let wasm = this._scene.engine.wasm, native = [AnimationComponent, CollisionComponent, InputComponent, LightComponent, MeshComponent, PhysXComponent, TextComponent, ViewComponent, ParticleEffectComponent];
       this._cache = new Array(native.length), this._constructors = new Array(native.length);
       for (let Class of native) {
         let ptr2 = wasm.tempUTF8(Class.TypeName), manager = wasm._wl_scene_get_component_manager_index(scene._index, ptr2);
@@ -3281,6 +3534,133 @@
       return this._scene.engine.wasm._wl_scene_get_component_manager_count(this._scene._index);
     }
   };
+  function setupComponentClass(ctor) {
+    inheritProperties(ctor), _setupDefaults(ctor), _setPropertyOrder(ctor);
+  }
+  var ComponentPropertyDecoder = class {
+    scene;
+    offsets;
+    constructor(scene, offsets) {
+      this.scene = scene, this.offsets = offsets;
+    }
+    decode(cbor, component) {
+      let ctor = component.constructor;
+      ctor._propertyOrder || setupComponentClass(ctor);
+      let typeInfo = cbor.readTypeInfo();
+      if (ctor === BrokenComponent)
+        return cbor.readItem(typeInfo);
+      if (getType(typeInfo) !== 0)
+        return this._error(`${component} parameters not encoded as an array.`), cbor.readItem(typeInfo);
+      let paramNames = ctor._propertyOrder, count = cbor.readArrayLength(typeInfo);
+      if (count !== paramNames.length)
+        return this._error(`${component} has ${count} parameters encoded, but expected ${paramNames.length}`), cbor.readItem(typeInfo, count);
+      for (let j = 0; j < count; ++j) {
+        let name = paramNames[j], property2 = ctor.Properties[name];
+        component[name] = this.decodeProperty(cbor, name, property2);
+      }
+    }
+    decodeProperty(cbor, name, property2) {
+      let typeInfo = cbor.readTypeInfo();
+      if (property2.type === 17)
+        return this.decodeRecordProperty(cbor, name, property2, typeInfo);
+      if (property2.type === 16)
+        return this.decodeArrayProperty(cbor, name, property2, typeInfo);
+      let value = cbor.readItem(typeInfo);
+      if (value === void 0)
+        return value = (property2.cloner ?? defaultPropertyCloner).clone(property2.type, property2.default), value;
+      typeof value == "number" && (value += this.offsets[property2.type]);
+      let engine = this.scene.engine;
+      switch (property2.type) {
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 13:
+        case 14:
+        case 15:
+          return value;
+        case 6: {
+          let wasm = engine.wasm;
+          return value ? this.scene.wrap(wasm._wl_object_id(this.scene._index, value)) : null;
+        }
+        case 7:
+          return engine.meshes.wrap(value);
+        case 8:
+          return engine.textures.wrap(value);
+        case 9:
+          return engine.materials.wrap(value);
+        case 18:
+          return engine.particleEffects.wrap(value);
+        case 10:
+          return this.scene.animations.wrap(value);
+        case 11:
+          return this.scene.skins.wrap(value);
+        case 12: {
+          let max4 = (1 << value.BYTES_PER_ELEMENT * 8) - 1;
+          return Float32Array.from(value, (f, _) => f / max4);
+        }
+      }
+    }
+    decodeRecordProperty(cbor, name, property2, typeInfo) {
+      let cborType = getType(typeInfo);
+      if (cborType !== 0 && cborType !== 2)
+        return this._error(`Record parameter '${name}' not serialized as an array`), cbor.readItem(typeInfo), null;
+      let record = property2.record;
+      if (!record)
+        return this._error(`Record parameter '${name}' .record is undefined`), cbor.readItem(typeInfo), null;
+      record._propertyOrder || setupComponentClass(record);
+      let propertyOrder = record._propertyOrder, count = cbor.readArrayLength(typeInfo);
+      if (isUndefined(cborType, count))
+        return (property2.cloner ?? defaultPropertyCloner).clone(property2.type, record);
+      let result = new record();
+      if (count !== propertyOrder.length) {
+        let propsCount = propertyOrder.length;
+        return this._error(`Record parameter ${name} has ${count} sub-parameters encoded, but expected ${propsCount}`), cbor.readItem(typeInfo, count), result;
+      }
+      let order = record._propertyOrder;
+      for (let i = 0; i < order.length; ++i) {
+        let key = order[i], prop = record.Properties[key];
+        result[key] = this.decodeProperty(cbor, key, prop);
+      }
+      return result;
+    }
+    decodeArrayProperty(cbor, name, property2, typeInfo) {
+      let log4 = this.scene.engine.log, cborType = getType(typeInfo);
+      if (cborType !== 0 && cborType !== 2)
+        return this._error(`Array parameter '${name}' not serialized as an array`), cbor.readItem(typeInfo), [];
+      if (!property2.element)
+        return this._error(`Array parameter '${name}' .element property is undefined`), cbor.readItem(typeInfo), [];
+      let count = cbor.readArrayLength(typeInfo);
+      if (isUndefined(cborType, count))
+        return [];
+      let result = new Array(count);
+      for (let i = 0; i < count; ++i)
+        result[i] = this.decodeProperty(cbor, name, property2.element);
+      return result;
+    }
+    _error(msg) {
+      this.scene.engine.log.error(0, msg);
+    }
+  };
+  var _componentDefaults = /* @__PURE__ */ new Map([[1, false], [2, 0], [3, 0], [4, ""], [5, void 0], [6, null], [7, null], [8, null], [9, null], [10, null], [11, null], [18, null], [12, Float32Array.from([0, 0, 0, 1])], [13, Float32Array.from([0, 0])], [14, Float32Array.from([0, 0, 0])], [15, Float32Array.from([0, 0, 0, 0])]]);
+  function _setupDefaults(ctor) {
+    for (let name in ctor.Properties) {
+      let p = ctor.Properties[name];
+      if (p.type === 5)
+        p.values?.length ? (typeof p.default != "number" && (p.default = p.values.indexOf(p.default)), (p.default < 0 || p.default >= p.values.length) && (p.default = 0)) : p.default = void 0;
+      else if ((p.type === 12 || p.type === 13 || p.type === 14 || p.type === 15) && Array.isArray(p.default))
+        p.default = Float32Array.from(p.default);
+      else if (p.default === void 0) {
+        let cloner = p.cloner ?? defaultPropertyCloner;
+        p.default = cloner.clone(p.type, _componentDefaults.get(p.type));
+      }
+      ctor.prototype[name] = p.default;
+    }
+  }
+  function _setPropertyOrder(ctor) {
+    ctor._propertyOrder = ctor.hasOwnProperty("Properties") ? Object.keys(ctor.Properties).sort() : [];
+  }
   var FetchProgressTransformer = class {
     #progress = 0;
     #callback;
@@ -3351,9 +3731,7 @@
   }
   function onImageReady(image) {
     return new Promise((res, rej) => {
-      if (image instanceof HTMLCanvasElement)
-        res(image);
-      else if (image instanceof HTMLVideoElement) {
+      if (image instanceof HTMLVideoElement) {
         if (image.readyState >= 2) {
           res(image);
           return;
@@ -3362,7 +3740,7 @@
           image.readyState >= 2 && res(image);
         }, { once: true });
         return;
-      } else if (image.complete) {
+      } else if (!(image instanceof HTMLImageElement) || image.complete) {
         res(image);
         return;
       }
@@ -3468,7 +3846,7 @@
     }
     wrap(objectId) {
       let cache = this._objectCache;
-      return cache[objectId] || (cache[objectId] = new Object3D(this, objectId));
+      return cache[objectId] || (cache[objectId] = new Object3D2(this, objectId));
     }
     destroy() {
       if (this._pendingDestroy > 0)
@@ -3550,7 +3928,7 @@
   var ForceMode = ((ForceMode2) => (ForceMode2[ForceMode2.Force = 0] = "Force", ForceMode2[ForceMode2.Impulse = 1] = "Impulse", ForceMode2[ForceMode2.VelocityChange = 2] = "VelocityChange", ForceMode2[ForceMode2.Acceleration = 3] = "Acceleration", ForceMode2))(ForceMode || {});
   var CollisionEventType = ((CollisionEventType2) => (CollisionEventType2[CollisionEventType2.Touch = 0] = "Touch", CollisionEventType2[CollisionEventType2.TouchLost = 1] = "TouchLost", CollisionEventType2[CollisionEventType2.TriggerTouch = 2] = "TriggerTouch", CollisionEventType2[CollisionEventType2.TriggerTouchLost = 3] = "TriggerTouchLost", CollisionEventType2))(CollisionEventType || {});
   var Shape = ((Shape2) => (Shape2[Shape2.None = 0] = "None", Shape2[Shape2.Sphere = 1] = "Sphere", Shape2[Shape2.Capsule = 2] = "Capsule", Shape2[Shape2.Box = 3] = "Box", Shape2[Shape2.Plane = 4] = "Plane", Shape2[Shape2.ConvexMesh = 5] = "ConvexMesh", Shape2[Shape2.TriangleMesh = 6] = "TriangleMesh", Shape2))(Shape || {});
-  var MeshAttribute = ((MeshAttribute2) => (MeshAttribute2[MeshAttribute2.Position = 0] = "Position", MeshAttribute2[MeshAttribute2.Tangent = 1] = "Tangent", MeshAttribute2[MeshAttribute2.Normal = 2] = "Normal", MeshAttribute2[MeshAttribute2.TextureCoordinate = 3] = "TextureCoordinate", MeshAttribute2[MeshAttribute2.Color = 4] = "Color", MeshAttribute2[MeshAttribute2.JointId = 5] = "JointId", MeshAttribute2[MeshAttribute2.JointWeight = 6] = "JointWeight", MeshAttribute2))(MeshAttribute || {});
+  var MeshAttribute = ((MeshAttribute2) => (MeshAttribute2[MeshAttribute2.Position = 0] = "Position", MeshAttribute2[MeshAttribute2.Tangent = 1] = "Tangent", MeshAttribute2[MeshAttribute2.Normal = 2] = "Normal", MeshAttribute2[MeshAttribute2.TextureCoordinate = 3] = "TextureCoordinate", MeshAttribute2[MeshAttribute2.Color = 4] = "Color", MeshAttribute2[MeshAttribute2.JointId = 5] = "JointId", MeshAttribute2[MeshAttribute2.JointWeight = 6] = "JointWeight", MeshAttribute2[MeshAttribute2.SecondaryTextureCoordinate = 7] = "SecondaryTextureCoordinate", MeshAttribute2))(MeshAttribute || {});
   var DestroyedObjectInstance = createDestroyedProxy2("object");
   var DestroyedComponentInstance = createDestroyedProxy2("component");
   var DestroyedPrefabInstance = createDestroyedProxy2("prefab/scene");
@@ -3751,8 +4129,6 @@
   var BrokenComponent = (_a2 = class extends Component3 {
   }, __publicField(_a2, "TypeName", "__broken-component__"), _a2);
   function inheritProperties(target) {
-    if (!target.TypeName)
-      return;
     let chain = [], curr = target;
     for (; curr && !isBaseComponentClass(curr); ) {
       let comp = curr;
@@ -3919,14 +4295,14 @@
       this.engine.wasm._wl_view_component_set_projectionType(this._id, type);
     }
     getProjectionMatrix(out = new Float32Array(16)) {
-      let wasm = this.engine.wasm, ptr = wasm._wl_view_component_get_projectionMatrix(this._id) / 4;
+      let wasm = this.engine.wasm;
+      wasm.requireTempMem(16 * 4), wasm._wl_view_component_get_projectionMatrix(this._id, wasm._tempMem);
       for (let i = 0; i < 16; ++i)
-        out[i] = wasm.HEAPF32[ptr + i];
+        out[i] = wasm._tempMemFloat[i];
       return out;
     }
     get projectionMatrix() {
-      let wasm = this.engine.wasm;
-      return new Float32Array(wasm.HEAPF32.buffer, wasm._wl_view_component_get_projectionMatrix(this._id), 16);
+      return this.getProjectionMatrix();
     }
     _setProjectionMatrix(v) {
       let wasm = this._scene.engine.wasm;
@@ -4210,9 +4586,20 @@
     }
   }, __publicField(_a9, "TypeName", "mesh"), _a9);
   __decorateClass2([nativeProperty()], MeshComponent.prototype, "material", 1), __decorateClass2([nativeProperty()], MeshComponent.prototype, "mesh", 1), __decorateClass2([nativeProperty()], MeshComponent.prototype, "skin", 1), __decorateClass2([nativeProperty()], MeshComponent.prototype, "morphTargets", 1), __decorateClass2([nativeProperty()], MeshComponent.prototype, "morphTargetWeights", 1);
-  var LockAxis = ((LockAxis2) => (LockAxis2[LockAxis2.None = 0] = "None", LockAxis2[LockAxis2.X = 1] = "X", LockAxis2[LockAxis2.Y = 2] = "Y", LockAxis2[LockAxis2.Z = 4] = "Z", LockAxis2))(LockAxis || {});
   var _a10;
-  var PhysXComponent = (_a10 = class extends Component3 {
+  var ParticleEffectComponent = (_a10 = class extends Component3 {
+    get particleEffect() {
+      let index = this.engine.wasm._wl_particleEffect_component_get_particleEffect(this._id);
+      return this.engine.particleEffects.wrap(index);
+    }
+    set particleEffect(particleEffect) {
+      this.engine.wasm._wl_particleEffect_component_set_particleEffect(this._id, particleEffect?._id ?? 0);
+    }
+  }, __publicField(_a10, "TypeName", "particle-effect"), _a10);
+  __decorateClass2([nativeProperty()], ParticleEffectComponent.prototype, "particleEffect", 1);
+  var LockAxis = ((LockAxis2) => (LockAxis2[LockAxis2.None = 0] = "None", LockAxis2[LockAxis2.X = 1] = "X", LockAxis2[LockAxis2.Y = 2] = "Y", LockAxis2[LockAxis2.Z = 4] = "Z", LockAxis2))(LockAxis || {});
+  var _a11;
+  var PhysXComponent = (_a11 = class extends Component3 {
     getTranslationOffset(out = new Float32Array(3)) {
       let wasm = this.engine.wasm;
       return wasm._wl_physx_component_get_offsetTranslation(this._id, wasm._tempMem), out[0] = wasm._tempMemFloat[0], out[1] = wasm._tempMemFloat[1], out[2] = wasm._tempMemFloat[2], out;
@@ -4411,7 +4798,7 @@
       let r = this.engine.wasm._wl_physx_component_removeCallback(this._id, callbackId), callbacks = this.scene._pxCallbacks;
       r && callbacks.get(this._id).splice(-r);
     }
-  }, __publicField(_a10, "TypeName", "physx"), _a10);
+  }, __publicField(_a11, "TypeName", "physx"), _a11);
   __decorateClass2([nativeProperty()], PhysXComponent.prototype, "static", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "translationOffset", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "rotationOffset", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "kinematic", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "gravity", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "simulate", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "allowSimulation", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "allowQuery", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "trigger", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "shape", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "shapeData", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "extents", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "staticFriction", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "dynamicFriction", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "bounciness", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "linearDamping", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "angularDamping", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "linearVelocity", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "angularVelocity", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "groupsMask", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "blocksMask", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "linearLockAxis", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "angularLockAxis", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "mass", 1), __decorateClass2([nativeProperty()], PhysXComponent.prototype, "sleepOnActivate", 1);
   var Physics = class {
     _hit;
@@ -4496,9 +4883,9 @@
     _bufferType;
     _tempBufferGetter;
     constructor(engine, options) {
-      this._engine = engine;
+      this._engine = engine, this._attribute = options.attribute, this._offset = options.offset, this._stride = options.stride, this._formatSize = options.formatSize, this._componentCount = options.componentCount, this._arraySize = options.arraySize, this._bufferType = options.bufferType, this.length = options.length;
       let wasm = this._engine.wasm;
-      this._attribute = options.attribute, this._offset = options.offset, this._stride = options.stride, this._formatSize = options.formatSize, this._componentCount = options.componentCount, this._arraySize = options.arraySize, this._bufferType = options.bufferType, this.length = options.length, this._tempBufferGetter = this._bufferType === Float32Array ? wasm.getTempBufferF32.bind(wasm) : wasm.getTempBufferU16.bind(wasm);
+      this._tempBufferGetter = this._bufferType === Float32Array ? wasm.getTempBufferF32.bind(wasm) : wasm.getTempBufferU16.bind(wasm);
     }
     createArray(count = 1) {
       return count = count > this.length ? this.length : count, new this._bufferType(count * this._componentCount * this._arraySize);
@@ -4506,18 +4893,18 @@
     get(index, out = this.createArray()) {
       if (out.length % this._componentCount !== 0)
         throw new Error(`out.length, ${out.length} is not a multiple of the attribute vector components, ${this._componentCount}`);
-      let dest = this._tempBufferGetter(out.length), elementSize = this._bufferType.BYTES_PER_ELEMENT, destSize = elementSize * out.length, srcFormatSize = this._formatSize * this._arraySize, destFormatSize = this._componentCount * elementSize * this._arraySize;
-      this._engine.wasm._wl_mesh_get_attribute_values(this._attribute, srcFormatSize, this._offset + index * this._stride, this._stride, destFormatSize, dest.byteOffset, destSize);
-      for (let i = 0; i < out.length; ++i)
+      let componentCount = this._componentCount * this._arraySize, len6 = Math.min(out.length, componentCount * this.length), dest = this._tempBufferGetter(len6), elementSize = this._bufferType.BYTES_PER_ELEMENT, destSize = elementSize * len6, srcFormatSize = this._formatSize * this._arraySize, destFormatSize = this._componentCount * elementSize * this._arraySize;
+      this.engine.wasm._wl_mesh_get_attribute_values(this._attribute, srcFormatSize, this._offset + index * this._stride, this._stride, destFormatSize, dest.byteOffset, destSize);
+      for (let i = 0; i < len6; ++i)
         out[i] = dest[i];
       return out;
     }
     set(i, v) {
       if (v.length % this._componentCount !== 0)
         throw new Error(`out.length, ${v.length} is not a multiple of the attribute vector components, ${this._componentCount}`);
-      let elementSize = this._bufferType.BYTES_PER_ELEMENT, srcSize = elementSize * v.length, srcFormatSize = this._componentCount * elementSize * this._arraySize, destFormatSize = this._formatSize * this._arraySize, wasm = this._engine.wasm;
+      let componentCount = this._componentCount * this._arraySize, len6 = Math.min(v.length, componentCount * this.length), elementSize = this._bufferType.BYTES_PER_ELEMENT, srcSize = elementSize * len6, srcFormatSize = componentCount * elementSize, destFormatSize = this._formatSize * this._arraySize, wasm = this.engine.wasm;
       if (v.buffer != wasm.HEAPU8.buffer) {
-        let dest = this._tempBufferGetter(v.length);
+        let dest = this._tempBufferGetter(len6);
         dest.set(v), v = dest;
       }
       return wasm._wl_mesh_set_attribute_values(this._attribute, srcFormatSize, v.byteOffset, srcSize, destFormatSize, this._offset + i * this._stride, this._stride), this;
@@ -4540,6 +4927,12 @@
       return this.engine.wasm._wl_font_get_outlineSize(this._id);
     }
   };
+  var ParticleEffect = class extends Resource {
+    clone() {
+      let index = this.engine.wasm._wl_particleEffect_clone(this._id);
+      return this.engine.particleEffects.wrap(index);
+    }
+  };
   var temp2d = null;
   var Texture = class extends Resource {
     constructor(engine, param) {
@@ -4550,26 +4943,26 @@
       super(engine, param);
     }
     get valid() {
-      return !this.isDestroyed;
+      return !this.isDestroyed && this.width !== 0 && this.height !== 0;
     }
     get id() {
       return this.index;
     }
     update() {
       let image = this._imageIndex;
-      !this.valid || !image || this.engine.wasm._wl_renderer_updateImage(image);
+      !this.valid || !image || this.engine.wasm._wl_image_markDirty(image);
     }
     get width() {
       let element = this.htmlElement;
       if (element)
-        return element.width;
+        return element.videoWidth ?? element.width;
       let wasm = this.engine.wasm;
       return wasm._wl_image_size(this._imageIndex, wasm._tempMem), wasm._tempMemUint32[0];
     }
     get height() {
       let element = this.htmlElement;
       if (element)
-        return element.height;
+        return element.videoHeight ?? element.height;
       let wasm = this.engine.wasm;
       return wasm._wl_image_size(this._imageIndex, wasm._tempMem), wasm._tempMemUint32[1];
     }
@@ -4580,28 +4973,33 @@
       let wasm = this.engine.wasm, jsImageIndex = wasm._wl_image_get_jsImage_index(image);
       return wasm._images[jsImageIndex];
     }
-    updateSubImage(x, y, w, h) {
+    updateSubImage(srcX, srcY, srcWidth, srcHeight, dstX = srcX, dstY = srcY, content) {
       if (this.isDestroyed)
-        return;
+        return false;
       let image = this._imageIndex;
       if (!image)
-        return;
-      let wasm = this.engine.wasm, jsImageIndex = wasm._wl_image_get_jsImage_index(image);
-      if (!temp2d) {
-        let canvas2 = document.createElement("canvas"), ctx = canvas2.getContext("2d");
-        if (!ctx)
-          throw new Error("Texture.updateSubImage(): Failed to obtain CanvasRenderingContext2D.");
-        temp2d = { canvas: canvas2, ctx };
-      }
-      let img = wasm._images[jsImageIndex];
+        return false;
+      let img = content ?? this.htmlElement;
       if (!img)
-        return;
-      temp2d.canvas.width = w, temp2d.canvas.height = h, temp2d.ctx.drawImage(img, x, y, w, h, 0, 0, w, h);
-      let yOffset = (img.videoHeight ?? img.height) - y - h;
-      wasm._images[jsImageIndex] = temp2d.canvas, wasm._wl_renderer_updateImage(image, x, yOffset), wasm._images[jsImageIndex] = img;
+        return false;
+      let isImageBitmap = img instanceof ImageBitmap, flipY = !isImageBitmap;
+      if (srcX || srcY) {
+        if (!temp2d) {
+          let canvas2 = document.createElement("canvas"), ctx = canvas2.getContext("2d");
+          if (!ctx)
+            throw new Error("Texture.updateSubImage(): Failed to obtain CanvasRenderingContext2D.");
+          temp2d = { canvas: canvas2, ctx };
+        }
+        temp2d.canvas.width = srcWidth, temp2d.canvas.height = srcHeight, temp2d.ctx.drawImage(img, srcX, isImageBitmap ? img.height - srcY - srcHeight : srcY, srcWidth, srcHeight, 0, 0, srcWidth, srcHeight), img = temp2d.canvas;
+      }
+      let wasm = this.engine.wasm;
+      wasm._images[0] = img;
+      let width = srcWidth - Math.max(srcWidth + dstX - this.width, 0), height = srcHeight - Math.max(srcHeight + dstY - this.height, 0), dstReversedY = this.height - dstY - height, ret = wasm._wl_renderer_updateImage(image, 0, width, height, dstX, dstReversedY, flipY);
+      return wasm._images[0] = null, !!ret;
     }
     destroy() {
-      this.engine.wasm._wl_texture_destroy(this._id), this.engine.textures._destroy(this);
+      let wasm = this.engine.wasm, img = wasm._images[this._imageIndex];
+      img instanceof ImageBitmap && img.close(), wasm._wl_texture_destroy(this._id), this.engine.textures._destroy(this);
     }
     toString() {
       return this.isDestroyed ? "Texture(destroyed)" : `Texture(${this._index})`;
@@ -4641,7 +5039,7 @@
       return this.isDestroyed ? "Animation(destroyed)" : `Animation(${this._index})`;
     }
   };
-  var Object3D = class {
+  var Object3D2 = class {
     _id = -1;
     _localId = -1;
     _scene;
@@ -5238,7 +5636,7 @@
       this.setCoefficients(v);
     }
   };
-  var APIVersion = { major: 1, minor: 3, patch: 1, rc: 0 };
+  var APIVersion = { major: 1, minor: 4, patch: 1, rc: 0 };
   var MaterialParamType = ((MaterialParamType2) => (MaterialParamType2[MaterialParamType2.UnsignedInt = 0] = "UnsignedInt", MaterialParamType2[MaterialParamType2.Int = 1] = "Int", MaterialParamType2[MaterialParamType2.HalfFloat = 2] = "HalfFloat", MaterialParamType2[MaterialParamType2.Float = 3] = "Float", MaterialParamType2[MaterialParamType2.Sampler = 4] = "Sampler", MaterialParamType2[MaterialParamType2.Font = 5] = "Font", MaterialParamType2))(MaterialParamType || {});
   var Material = class extends Resource {
     constructor(engine, params) {
@@ -5310,7 +5708,7 @@
     }
     _cacheDefinitions() {
       let count = this.engine.wasm._wl_get_material_definition_count();
-      for (let i = 0; i < count; ++i)
+      for (let i = 1; i < count; ++i)
         this._materialTemplates[i] = this._createMaterialTemplate(i);
     }
     _createMaterialTemplate(definitionIndex) {
@@ -5443,6 +5841,9 @@
       return this._cache[instance.index] = instance, instance;
     }
   };
+  function needsFlipY(image) {
+    return image instanceof ImageBitmap ? 0 : 1;
+  }
   var TextureManager = class extends ResourceManager {
     constructor(engine) {
       super(engine, Texture);
@@ -5451,7 +5852,9 @@
       let wasm = this.engine.wasm, jsImageIndex = wasm._images.length;
       if (wasm._images.push(image), image instanceof HTMLImageElement && !image.complete)
         throw new Error("image must be ready to create a texture");
-      let width = image.videoWidth ?? image.width, height = image.videoHeight ?? image.height, imageIndex = wasm._wl_image_create(jsImageIndex, width, height), index = wasm._wl_texture_create(imageIndex), instance = new Texture(this.engine, index);
+      let width = image.videoWidth ?? image.width, height = image.videoHeight ?? image.height, imageIndex = wasm._wl_image_create(jsImageIndex);
+      wasm._wl_image_markReady(imageIndex, width, height, needsFlipY(image));
+      let index = wasm._wl_texture_create(imageIndex), instance = new Texture(this.engine, index);
       return this._cache[instance.index] = instance, instance;
     }
     load(filename, crossOrigin) {
@@ -5582,7 +5985,9 @@
       if (!this.sessionState)
         return;
       let scene = this.engine.scene;
-      this.sessionState.session.updateRenderState({ depthNear: near ?? scene.leftEyeView.near, depthFar: far ?? scene.leftEyeView.far });
+      near ??= scene.leftEyeView.near, far ??= scene.leftEyeView.far;
+      let reverseZ = !!this.engine.isReverseZEnabled;
+      this.sessionState.session.updateRenderState({ depthNear: reverseZ ? far : near, depthFar: reverseZ ? near : far });
     }
     requestSession(mode, features, optionalFeatures = []) {
       let options = this.sessionOptions(features, optionalFeatures);
@@ -5646,7 +6051,7 @@
     endSession() {
       this.sessionState.session.cancelAnimationFrame(this._requestAnimationFrameId), this._requestAnimationFrameId = null, this.sessionState = null, this.#wasm._wl_reset_context(), this.onSessionStart instanceof RetainEmitter && this.onSessionStart.reset(), this.onSessionEnd.notify(), console.log("WebXR session ended"), this._inXR = false, this.updateViewState(false);
       let scene = this.engine.scene;
-      scene.leftEyeView._generateProjectionMatrix(), scene.rightEyeView._generateProjectionMatrix(), this.#wasm._wl_xr_exit(), this.#wasm._wl_application_redraw();
+      this.#wasm._wl_xr_exit(), scene.leftEyeView._generateProjectionMatrix(), scene.rightEyeView._generateProjectionMatrix(), this.#wasm._wl_application_redraw();
     }
     nextFrame(time, frame) {
       this.sessionState.frame = frame;
@@ -5668,7 +6073,7 @@
     nextFrameSingle(time, frame) {
       let session = frame.session;
       this.sessionState != null && (this._requestAnimationFrameId = session.requestAnimationFrame(this.nextFrameSingle.bind(this)));
-      let scene = this.engine.scene, pose = frame.getViewerPose(this._refSpace);
+      let pose = frame.getViewerPose(this._refSpace);
       if (!pose)
         return;
       let gl = this.engine.canvas.getContext("webgl2"), GL = this.#wasm.GL, glLayer = session.renderState.baseLayer;
@@ -5678,7 +6083,7 @@
       }
       for (let i = 0; i < pose.views.length; ++i) {
         let view = pose.views[i], viewport = glLayer.getViewport(view), destView;
-        view.eye == "left" ? destView = this.engine.scene.leftEyeView : view.eye == "right" ? destView = this.engine.scene.rightEyeView : destView = this.engine.scene._components.componentAt(ViewComponent, i), destView._setViewport(viewport.x, viewport.y, viewport.width, viewport.height), destView._setProjectionMatrix(view.projectionMatrix), this.#wasm._wl_view_component_set_externalFramebuffer(destView._id, this._fbo);
+        view.eye == "left" ? destView = this.engine.scene.leftEyeView : view.eye == "right" ? destView = this.engine.scene.rightEyeView : destView = this.engine.scene._components.componentAt(ViewComponent, i), destView._setViewport(viewport.x, viewport.y, viewport.width, viewport.height), destView._setProjectionMatrix(view.projectionMatrix), this.#wasm._wl_view_component_remapProjectionMatrix(destView._id, this.engine.isReverseZEnabled, false), this.#wasm._wl_view_component_set_externalFramebuffer(destView._id, this._fbo);
       }
       this.nextFrame(time, frame);
     }
@@ -5701,7 +6106,7 @@
       let ids = this._fbo;
       pose.views.forEach((view) => {
         let viewIndex = view.eye == "right" ? 1 : 0, subImage = binding.getViewSubImage(layer, view), viewport = subImage.viewport, destView;
-        if (view.eye == "right" ? destView = this.engine.scene.rightEyeView : destView = this.engine.scene.leftEyeView, destView._setViewport(viewport.x, viewport.y, viewport.width, viewport.height), destView._setProjectionMatrix(view.projectionMatrix), this.#wasm._wl_view_component_set_externalFramebuffer(destView._id, ids[viewIndex]), !createFramebuffer || !textureArray && viewIndex != 0)
+        if (view.eye == "right" ? destView = this.engine.scene.rightEyeView : destView = this.engine.scene.leftEyeView, destView._setViewport(viewport.x, viewport.y, viewport.width, viewport.height), destView._setProjectionMatrix(view.projectionMatrix), this.#wasm._wl_view_component_remapProjectionMatrix(destView._id, this.engine.isReverseZEnabled, false), this.#wasm._wl_view_component_set_externalFramebuffer(destView._id, ids[viewIndex]), !createFramebuffer || !textureArray && viewIndex != 0)
           return;
         let colorTexture = subImage.colorTexture, colorImageId = colorTexture.name = colorTexture.name || GL.getNewId(GL.textures);
         GL.textures[colorImageId] = colorTexture;
@@ -5982,13 +6387,17 @@
     erasePrototypeOnDestroy = false;
     legacyMaterialSupport = true;
     autoHotReload = true;
+    loadUncompressedImagesAsBitmap = false;
     _scenes = [];
     _scene;
+    _mainSceneVersion = 0;
     _textures;
     _materials;
     _meshes;
     _morphTargets;
     _fonts;
+    _particleEffects;
+    _uncompressedPromises = [];
     #wasm;
     #physics = null;
     #webxr;
@@ -6086,7 +6495,7 @@
       let ptr = wasm.copyBufferToHeap(buffer);
       try {
         let index = wasm._wl_glTF_scene_create(extensions, ptr, buffer.byteLength), scene = new PrefabGLTF(this, index);
-        return this._scenes[scene._index] = scene, scene;
+        return this._scenes[scene._index] = scene, this.runtimeVersion.patch && this._loadUncompressedImages(scene._index), scene;
       } finally {
         wasm._free(ptr);
       }
@@ -6164,6 +6573,9 @@
     get fonts() {
       return this._fonts;
     }
+    get particleEffects() {
+      return this._particleEffects;
+    }
     get images() {
       let wasm = this.wasm, max4 = wasm._tempMemSize >> 1, count = wasm._wl_get_images(wasm._tempMem, max4), result = new Array(count);
       for (let i = 0; i < count; ++i) {
@@ -6173,11 +6585,18 @@
       return result;
     }
     get imagesPromise() {
-      let promises = this.images.map((i) => onImageReady(i));
-      return Promise.all(promises);
+      let wasm = this.wasm, max4 = wasm._tempMemSize >> 1, count = wasm._wl_get_images(wasm._tempMem, max4), result = new Array(count);
+      for (let i = 0; i < count; ++i) {
+        let index = wasm._tempMemUint16[i], loading = this._uncompressedPromises[index];
+        result[i] = (loading ?? Promise.resolve()).then(() => wasm._images[index]);
+      }
+      return Promise.all(result);
     }
     get isTextureStreamingIdle() {
       return !!this.wasm._wl_renderer_streaming_idle();
+    }
+    get isReverseZEnabled() {
+      return !!this.wasm._wl_renderer_isReverseZEnabled();
     }
     set autoResizeCanvas(flag) {
       if (!!this.#resizeObserver !== flag) {
@@ -6232,23 +6651,23 @@
     }
     _reload(index) {
       let scene = new Scene(this, index);
-      return this._scenes[index] = scene, this._textures = new TextureManager(this), this._materials = new MaterialManager(this), this._meshes = new MeshManager(this), this._morphTargets = new ResourceManager(this, MorphTargets), this._fonts = new ResourceManager(this, Font), scene;
+      return this._scenes[index] = scene, this._textures = new TextureManager(this), this._materials = new MaterialManager(this), this._meshes = new MeshManager(this), this._morphTargets = new ResourceManager(this, MorphTargets), this._fonts = new ResourceManager(this, Font), this._particleEffects = new ResourceManager(this, ParticleEffect), this._uncompressedPromises.length = 0, scene;
     }
     async _loadMainScene(data, url, nocache, options) {
-      nocache && (url += `?t=${Date.now()}`), this.#wasm._wl_deactivate_activeScene();
+      nocache && (url += `?t=${Date.now()}`), this.#wasm._wl_deactivate_activeScene(), ++this._mainSceneVersion;
       for (let i = this._scenes.length - 1; i >= 0; --i) {
         let scene = this._scenes[i];
         scene && scene.destroy();
       }
-      this._textures._clear(), this._materials._clear(), this._meshes._clear(), this._morphTargets._clear();
+      this._textures._clear(), this._materials._clear(), this._meshes._clear(), this._morphTargets._clear(), this._uncompressedPromises.length = 0;
       let stream = data instanceof ReadableStream ? data : new ReadableStream(new ArrayBufferSource(data)), sink = new ChunkedSceneLoadSink(this, 1, url);
       await stream.pipeTo(new WritableStream(sink));
       let mainScene = this._reload(sink.sceneIndex);
-      this._preactivate(mainScene);
+      this._loadUncompressedImages(mainScene._index), this._preactivate(mainScene);
       let componentsBundle = mainScene.componentsBundle;
       if (componentsBundle) {
-        let bundleURL = new URL(componentsBundle, document.baseURI);
-        await this.registerBundle(bundleURL.href, nocache);
+        let bundleURL = new URL(componentsBundle, document.baseURI), url2 = nocache ? bundleURL.href.split("?")[0] : bundleURL.href;
+        await this.registerBundle(url2, nocache);
       }
       return mainScene._initialize(), await this.switchTo(mainScene, options), mainScene;
     }
@@ -6256,13 +6675,13 @@
       let { buffer, url } = Scene.validateBufferOptions(options), sink = new ChunkedSceneLoadSink(this, 0, url);
       sink.write(new Uint8Array(buffer)), sink.close();
       let index = sink.sceneIndex, scene = new PrefabClass(this, index);
-      return this._scenes[index] = scene, scene;
+      return this._scenes[index] = scene, this._loadUncompressedImages(scene._index), scene;
     }
     async _loadSceneFromStream(PrefabClass, options) {
       let { stream, url } = Scene.validateStreamOptions(options), sink = new ChunkedSceneLoadSink(this, 0, url);
       await stream.pipeTo(new WritableStream(sink));
       let index = sink.sceneIndex, scene = new PrefabClass(this, index);
-      return this._scenes[index] = scene, scene;
+      return this._scenes[index] = scene, this._loadUncompressedImages(scene._index), scene;
     }
     _validateLoadedPrefab(scene) {
       if (this.wasm._wl_scene_activatable(scene._index))
@@ -6274,6 +6693,22 @@
     }
     _preactivate(scene) {
       this._scene = scene, this.physics && (this.physics._hit._scene = scene);
+    }
+    _loadUncompressedImages(sceneIndex) {
+      let mainSceneVersion = this._mainSceneVersion, wasm = this.wasm, bitmapOptions = { colorSpaceConversion: "none" }, imageCount = wasm._wl_image_count();
+      for (let i = 0; i < imageCount; ++i) {
+        if (wasm._wl_image_originalScene(i) !== sceneIndex)
+          continue;
+        let jsImageIndex = wasm._wl_image_get_jsImage_index(i), image = wasm._images[jsImageIndex];
+        if (!image)
+          continue;
+        let promise = onImageReady(image);
+        this.loadUncompressedImagesAsBitmap && (promise = promise.then((img) => createImageBitmap(img, bitmapOptions))), this._uncompressedPromises[jsImageIndex] = promise.then((img) => {
+          this._mainSceneVersion === mainSceneVersion && wasm._wl_image_markReady(i, img.width, img.height, needsFlipY(img));
+        }).catch((e) => {
+          this._mainSceneVersion === mainSceneVersion && this.log.error(1, "Failed to load uncompressed image", e);
+        });
+      }
     }
   };
   function assert(bit) {
@@ -6306,274 +6741,21 @@
   var Logger = class {
     levels = new BitSet();
     tags = new BitSet().enableAll();
+    onLog = new Emitter();
     constructor(...levels) {
       this.levels.enable(...levels);
     }
     info(tag, ...msg) {
-      return this.levels.enabled(0) && this.tags.enabled(tag) && console.log(...msg), this;
+      return this.levels.enabled(0) && this.tags.enabled(tag) && console.log(...msg), this.onLog.notify(0, msg, tag), this;
     }
     warn(tag, ...msg) {
-      return this.levels.enabled(1) && this.tags.enabled(tag) && console.warn(...msg), this;
+      return this.levels.enabled(1) && this.tags.enabled(tag) && console.warn(...msg), this.onLog.notify(1, msg, tag), this;
     }
     error(tag, ...msg) {
-      return this.levels.enabled(2) && this.tags.enabled(tag) && console.error(...msg), this;
+      return this.levels.enabled(2) && this.tags.enabled(tag) && console.error(...msg), this.onLog.notify(2, msg, tag), this;
     }
   };
-  function decode(data, tagger = (_, value) => value, options = {}) {
-    let reader = new CBORReader(data);
-    reader.tagger = tagger, options.dictionary && (reader.dictionary = options.dictionary);
-    let ret = reader.decodeItem();
-    if (reader.offset !== data.byteLength)
-      throw new Error("CBORError: Remaining bytes");
-    return ret;
-  }
-  var CBORType = ((CBORType2) => (CBORType2[CBORType2.Array = 0] = "Array", CBORType2[CBORType2.Record = 1] = "Record", CBORType2[CBORType2.Constant = 2] = "Constant", CBORType2[CBORType2.Native = 3] = "Native", CBORType2))(CBORType || {});
-  function getType(typeInfo) {
-    let majorType = typeInfo >> 5, additionalInformation = typeInfo & 31;
-    switch (majorType) {
-      case 4:
-        return 0;
-      case 5:
-        return 1;
-      case 7:
-        return 2;
-    }
-    return 3;
-  }
-  function isUndefined(type, length11) {
-    return type === 2 && length11 === 23;
-  }
-  var CBORReader = class {
-    dataView;
-    data;
-    offset;
-    tagger = (_, value) => value;
-    dictionary = "object";
-    constructor(data) {
-      this.dataView = new DataView(data.buffer, data.byteOffset, data.byteLength), this.data = data, this.offset = 0;
-    }
-    readTypeInfo() {
-      return this.readUint8();
-    }
-    readArrayLength(typeInfo) {
-      let majorType = typeInfo >> 5, additionalInformation = typeInfo & 31, length11 = this.readLength(additionalInformation);
-      if (length11 < 0 && (majorType < 2 || 6 < majorType))
-        throw new Error("CBORError: Invalid length");
-      return length11;
-    }
-    readItem(typeInfo) {
-      let majorType = typeInfo >> 5, additionalInformation = typeInfo & 31, i, length11;
-      if (majorType === 7)
-        switch (additionalInformation) {
-          case 25:
-            return this.readFloat16();
-          case 26:
-            return this.readFloat32();
-          case 27:
-            return this.readFloat64();
-        }
-      if (length11 = this.readLength(additionalInformation), length11 < 0 && (majorType < 2 || 6 < majorType))
-        throw new Error("CBORError: Invalid length");
-      switch (majorType) {
-        case 0:
-          return length11;
-        case 1:
-          return typeof length11 == "number" ? -1 - length11 : -1n - length11;
-        case 2: {
-          if (length11 < 0) {
-            let elements = [], fullArrayLength = 0;
-            for (; (length11 = this.readIndefiniteStringLength(majorType)) >= 0; )
-              fullArrayLength += length11, elements.push(this.readArrayBuffer(length11));
-            let fullArray = new Uint8Array(fullArrayLength), fullArrayOffset = 0;
-            for (i = 0; i < elements.length; ++i)
-              fullArray.set(elements[i], fullArrayOffset), fullArrayOffset += elements[i].length;
-            return fullArray;
-          }
-          return this.readArrayBuffer(length11).slice();
-        }
-        case 3: {
-          let utf16data = [];
-          if (length11 < 0)
-            for (; (length11 = this.readIndefiniteStringLength(majorType)) >= 0; )
-              this.appendUtf16Data(utf16data, length11);
-          else
-            this.appendUtf16Data(utf16data, length11);
-          let string = "", DECODE_CHUNK_SIZE = 8192;
-          for (i = 0; i < utf16data.length; i += DECODE_CHUNK_SIZE)
-            string += String.fromCharCode.apply(null, utf16data.slice(i, i + DECODE_CHUNK_SIZE));
-          return string;
-        }
-        case 4: {
-          let retArray;
-          if (length11 < 0) {
-            retArray = [];
-            let index = 0;
-            for (; !this.readBreak(); )
-              retArray.push(this.decodeItem());
-          } else
-            for (retArray = new Array(length11), i = 0; i < length11; ++i)
-              retArray[i] = this.decodeItem();
-          return retArray;
-        }
-        case 5: {
-          if (this.dictionary === "map") {
-            let retMap = /* @__PURE__ */ new Map();
-            for (i = 0; i < length11 || length11 < 0 && !this.readBreak(); ++i) {
-              let key = this.decodeItem();
-              if (retMap.has(key))
-                throw new Error("CBORError: Duplicate key encountered");
-              retMap.set(key, this.decodeItem());
-            }
-            return retMap;
-          }
-          let retObject = {};
-          for (i = 0; i < length11 || length11 < 0 && !this.readBreak(); ++i) {
-            let key = this.decodeItem();
-            if (Object.prototype.hasOwnProperty.call(retObject, key))
-              throw new Error("CBORError: Duplicate key encountered");
-            retObject[key] = this.decodeItem();
-          }
-          return retObject;
-        }
-        case 6: {
-          let value = this.decodeItem(), tag = length11;
-          if (value instanceof Uint8Array)
-            switch (tag) {
-              case 2:
-              case 3:
-                let num = value.reduce((acc, n) => (acc << 8n) + BigInt(n), 0n);
-                return tag == 3 && (num = -1n - num), num;
-              case 64:
-                return value;
-              case 72:
-                return new Int8Array(value.buffer);
-              case 69:
-                return new Uint16Array(value.buffer);
-              case 77:
-                return new Int16Array(value.buffer);
-              case 70:
-                return new Uint32Array(value.buffer);
-              case 78:
-                return new Int32Array(value.buffer);
-              case 71:
-                return new BigUint64Array(value.buffer);
-              case 79:
-                return new BigInt64Array(value.buffer);
-              case 85:
-                return new Float32Array(value.buffer);
-              case 86:
-                return new Float64Array(value.buffer);
-            }
-          return this.tagger(tag, value);
-        }
-        case 7:
-          switch (length11) {
-            case 20:
-              return false;
-            case 21:
-              return true;
-            case 22:
-              return null;
-            case 23:
-              return;
-            default:
-              return length11;
-          }
-      }
-    }
-    decodeItem() {
-      let initialByte = this.readUint8();
-      return this.readItem(initialByte);
-    }
-    readArrayBuffer(length11) {
-      return this.commitRead(length11, this.data.subarray(this.offset, this.offset + length11));
-    }
-    readFloat16() {
-      let POW_2_24 = 5960464477539063e-23, tempArrayBuffer = new ArrayBuffer(4), tempDataView = new DataView(tempArrayBuffer), value = this.readUint16(), sign2 = value & 32768, exponent = value & 31744, fraction = value & 1023;
-      if (exponent === 31744)
-        exponent = 261120;
-      else if (exponent !== 0)
-        exponent += 114688;
-      else if (fraction !== 0)
-        return (sign2 ? -1 : 1) * fraction * POW_2_24;
-      return tempDataView.setUint32(0, sign2 << 16 | exponent << 13 | fraction << 13), tempDataView.getFloat32(0);
-    }
-    readFloat32() {
-      return this.commitRead(4, this.dataView.getFloat32(this.offset));
-    }
-    readFloat64() {
-      return this.commitRead(8, this.dataView.getFloat64(this.offset));
-    }
-    readUint8() {
-      return this.commitRead(1, this.data[this.offset]);
-    }
-    readUint16() {
-      return this.commitRead(2, this.dataView.getUint16(this.offset));
-    }
-    readUint32() {
-      return this.commitRead(4, this.dataView.getUint32(this.offset));
-    }
-    readUint64() {
-      return this.commitRead(8, this.dataView.getBigUint64(this.offset));
-    }
-    readBreak() {
-      return this.data[this.offset] !== 255 ? false : (this.offset += 1, true);
-    }
-    readLength(additionalInformation) {
-      if (additionalInformation < 24)
-        return additionalInformation;
-      if (additionalInformation === 24)
-        return this.readUint8();
-      if (additionalInformation === 25)
-        return this.readUint16();
-      if (additionalInformation === 26)
-        return this.readUint32();
-      if (additionalInformation === 27) {
-        let integer = this.readUint64();
-        return integer <= Number.MAX_SAFE_INTEGER ? Number(integer) : integer;
-      }
-      if (additionalInformation === 31)
-        return -1;
-      throw new Error("CBORError: Invalid length encoding");
-    }
-    readIndefiniteStringLength(majorType) {
-      let initialByte = this.readUint8();
-      if (initialByte === 255)
-        return -1;
-      let length11 = this.readLength(initialByte & 31);
-      if (length11 < 0 || initialByte >> 5 !== majorType)
-        throw new Error("CBORError: Invalid indefinite length element");
-      return Number(length11);
-    }
-    appendUtf16Data(utf16data, length11) {
-      for (let i = 0; i < length11; ++i) {
-        let value = this.readUint8();
-        value & 128 && (value < 224 ? (value = (value & 31) << 6 | this.readUint8() & 63, length11 -= 1) : value < 240 ? (value = (value & 15) << 12 | (this.readUint8() & 63) << 6 | this.readUint8() & 63, length11 -= 2) : (value = (value & 7) << 18 | (this.readUint8() & 63) << 12 | (this.readUint8() & 63) << 6 | this.readUint8() & 63, length11 -= 3)), value < 65536 ? utf16data.push(value) : (value -= 65536, utf16data.push(55296 | value >> 10), utf16data.push(56320 | value & 1023));
-      }
-    }
-    commitRead(length11, value) {
-      return this.offset += length11, value;
-    }
-  };
-  var _componentDefaults = /* @__PURE__ */ new Map([[1, false], [2, 0], [3, 0], [4, ""], [5, void 0], [6, null], [7, null], [8, null], [9, null], [10, null], [11, null], [12, Float32Array.from([0, 0, 0, 1])], [13, Float32Array.from([0, 0])], [14, Float32Array.from([0, 0, 0])], [15, Float32Array.from([0, 0, 0, 0])]]);
-  function _setupDefaults(ctor) {
-    for (let name in ctor.Properties) {
-      let p = ctor.Properties[name];
-      if (p.type === 5)
-        p.values?.length ? (typeof p.default != "number" && (p.default = p.values.indexOf(p.default)), (p.default < 0 || p.default >= p.values.length) && (p.default = 0)) : p.default = void 0;
-      else if ((p.type === 12 || p.type === 13 || p.type === 14 || p.type === 15) && Array.isArray(p.default))
-        p.default = Float32Array.from(p.default);
-      else if (p.default === void 0) {
-        let cloner = p.cloner ?? defaultPropertyCloner;
-        p.default = cloner.clone(p.type, _componentDefaults.get(p.type));
-      }
-      ctor.prototype[name] = p.default;
-    }
-  }
-  function _setPropertyOrder(ctor) {
-    ctor._propertyOrder = ctor.hasOwnProperty("Properties") ? Object.keys(ctor.Properties).sort() : [];
-  }
-  var WASM2 = class {
+  var WASM = class {
     wasm = null;
     canvas = null;
     preinitializedWebGPUDevice = null;
@@ -6622,7 +6804,7 @@
         throw new Error("no name provided for component.");
       if (!ctor.prototype._triggerInit)
         throw new Error(`registerComponent(): Component ${ctor.TypeName} must extend Component`);
-      inheritProperties(ctor), _setupDefaults(ctor), _setPropertyOrder(ctor);
+      setupComponentClass(ctor);
       let typeIndex = ctor.TypeName in this._componentTypeIndices ? this._componentTypeIndices[ctor.TypeName] : this._componentTypes.length;
       return this._componentTypes[typeIndex] = ctor, this._componentTypeIndices[ctor.TypeName] = typeIndex, ctor === BrokenComponent || (this._log.info(0, "Registered component", ctor.TypeName, `(class ${ctor.name})`, "with index", typeIndex), ctor.onRegister && ctor.onRegister(this._engine)), typeIndex;
     }
@@ -6689,75 +6871,23 @@
       }
     }
     _wljs_scene_initialize(sceneIndex, idsPtr, idsEnd, paramDataPtr, paramDataEndPtr, offsetsPtr, offsetsEndPtr) {
-      let cbor = this.HEAPU8.subarray(paramDataPtr, paramDataEndPtr), offsets = this.HEAPU32.subarray(offsetsPtr >>> 2, offsetsEndPtr >>> 2), ids = this.HEAPU16.subarray(idsPtr >>> 1, idsEnd >>> 1), engine = this._engine, scene = engine._scenes[sceneIndex], components = scene._jsComponents, decoded;
-      try {
-        decoded = decode(cbor);
-      } catch (e) {
-        this._log.error(0, "Exception during component parameter decoding"), this._log.error(2, e);
+      let cborEncoded = this.HEAPU8.subarray(paramDataPtr, paramDataEndPtr), offsets = this.HEAPU32.subarray(offsetsPtr >>> 2, offsetsEndPtr >>> 2), ids = this.HEAPU16.subarray(idsPtr >>> 1, idsEnd >>> 1), scene = this._engine._scenes[sceneIndex], components = scene._jsComponents, cbor = new CBORReader(cborEncoded), componentsCount = 0;
+      {
+        let typeInfo = cbor.readTypeInfo();
+        if (getType(typeInfo) !== 0) {
+          this._log.error(0, "Parameters data must be an array");
+          return;
+        }
+        componentsCount = cbor.readArrayLength(typeInfo);
+      }
+      if (componentsCount !== ids.length) {
+        this._log.error(0, `Parameters set for ${componentsCount} components, but expected ${ids.length}`);
         return;
       }
-      if (!Array.isArray(decoded)) {
-        this._log.error(0, "Parameter data must be an array");
-        return;
-      }
-      if (decoded.length !== ids.length) {
-        this._log.error(0, `Parameter data has size ${decoded.length} but expected ${ids.length}`);
-        return;
-      }
-      for (let i = 0; i < decoded.length; ++i) {
-        let id = Component3._pack(sceneIndex, ids[i]), index = this._wl_get_js_component_index_for_id(id), component = components[index], ctor = component.constructor;
-        if (ctor == BrokenComponent)
-          continue;
-        let paramNames = ctor._propertyOrder, paramValues = decoded[i];
-        if (!Array.isArray(paramValues)) {
-          this._log.error(0, "Component parameter data must be an array");
-          continue;
-        }
-        if (paramValues.length !== paramNames.length) {
-          this._log.error(0, `Component parameter data has size ${paramValues.length} but expected ${paramNames.length}`);
-          continue;
-        }
-        for (let j = 0; j < paramValues.length; ++j) {
-          let name = paramNames[j], property2 = ctor.Properties[name], type = property2.type, value = paramValues[j];
-          if (value === void 0) {
-            value = (property2.cloner ?? defaultPropertyCloner).clone(type, property2.default), component[name] = value;
-            continue;
-          }
-          switch (typeof value == "number" && (value += offsets[type]), type) {
-            case 1:
-            case 2:
-            case 3:
-            case 4:
-            case 5:
-            case 13:
-            case 14:
-            case 15:
-              break;
-            case 6:
-              value = value ? scene.wrap(this._wl_object_id(scene._index, value)) : null;
-              break;
-            case 7:
-              value = engine.meshes.wrap(value);
-              break;
-            case 8:
-              value = engine.textures.wrap(value);
-              break;
-            case 9:
-              value = engine.materials.wrap(value);
-              break;
-            case 10:
-              value = scene.animations.wrap(value);
-              break;
-            case 11:
-              value = scene.skins.wrap(value);
-              break;
-            case 12:
-              let max4 = (1 << value.BYTES_PER_ELEMENT * 8) - 1;
-              value = Float32Array.from(value, (f, _) => f / max4);
-              break;
-          }
-          component[name] = value;
-        }
+      let decoder = new ComponentPropertyDecoder(scene, offsets);
+      for (let i = 0; i < componentsCount; ++i) {
+        let id = Component3._pack(sceneIndex, ids[i]), index = this._wl_get_js_component_index_for_id(id), component = components[index];
+        decoder.decode(cbor, component);
       }
     }
     _wljs_set_component_param_translation(scene, component, param, valuePtr, valueEndPtr) {
@@ -6811,12 +6941,12 @@
     });
   }
   async function detectFeatures() {
-    let [simdSupported, threadsSupported] = await Promise.all([simd(), threads()]);
-    return simdSupported ? console.log("WASM SIMD is supported") : console.warn("WASM SIMD is not supported"), threadsSupported ? self.crossOriginIsolated ? console.log("WASM Threads is supported") : console.warn("WASM Threads is supported, but the page is not crossOriginIsolated, therefore thread support is disabled.") : console.warn("WASM Threads is not supported"), threadsSupported = threadsSupported && self.crossOriginIsolated, { simdSupported, threadsSupported };
+    let threadsSupported = await threads();
+    return threadsSupported ? self.crossOriginIsolated ? console.log("WASM Threads is supported") : console.warn("WASM Threads is supported, but the page is not crossOriginIsolated, therefore thread support is disabled.") : console.warn("WASM Threads is not supported"), threadsSupported = threadsSupported && self.crossOriginIsolated, { threadsSupported };
   }
   async function loadRuntime(runtime, options = {}) {
-    let baseURL = getBaseUrl(runtime), { simdSupported, threadsSupported } = await detectFeatures(), { simd: simd2 = simdSupported, threads: threads2 = threadsSupported, webgpu = false, physx = false, loader = false, renderer = true, xrFramebufferScaleFactor = 1, xrOfferSession = null, loadingScreen = baseURL ? `${baseURL}/${LOADING_SCREEN_PATH}` : LOADING_SCREEN_PATH, canvas: canvas2 = "canvas", logs = [0, 1, 2] } = options, variant = [];
-    webgpu && variant.push("webgpu"), loader && variant.push("loader"), physx && variant.push("physx"), simd2 && variant.push("simd"), threads2 && variant.push("threads");
+    let baseURL = getBaseUrl(runtime), { threadsSupported } = await detectFeatures(), { threads: threads2 = threadsSupported, webgpu = false, physx = false, loader = false, renderer = true, xrFramebufferScaleFactor = 1, xrOfferSession = null, loadingScreen = baseURL ? `${baseURL}/${LOADING_SCREEN_PATH}` : LOADING_SCREEN_PATH, canvas: canvas2 = "canvas", logs = [0, 1, 2] } = options, variant = [];
+    webgpu && variant.push("webgpu"), loader && variant.push("loader"), physx && variant.push("physx"), threads2 && variant.push("threads");
     let variantStr = variant.join("-"), filename = runtime;
     variantStr && (filename = `${filename}-${variantStr}`);
     let download = function(filename2, errorMessage) {
@@ -6826,11 +6956,11 @@
       throw new Error(`loadRuntime(): Failed to find canvas with id '${canvas2}'`);
     if (!(canvasElement instanceof HTMLCanvasElement))
       throw new Error(`loadRuntime(): HTML element '${canvas2}' must be a canvas`);
-    let wasm = new WASM2(threads2);
+    let wasm = new WASM(threads2);
     wasm.wasm = wasmData, wasm.canvas = canvasElement, wasm._log.levels.enable(...logs), window._WL || (window._WL = { runtimes: {} });
     let runtimes = window._WL.runtimes, runtimeGlobalId = variantStr || "default";
     if (runtimes[runtimeGlobalId] || (await loadScript(`${filename}.js`), runtimes[runtimeGlobalId] = window.instantiateWonderlandRuntime, window.instantiateWonderlandRuntime = void 0), await runtimes[runtimeGlobalId](wasm), webgpu) {
-      let WebGPU = wasm.WebGPU, adapter = await navigator.gpu.requestAdapter(), adapterId = WebGPU.mgrAdapter.create(adapter), desc = { requiredFeatures: ["texture-compression-bc"] }, device = await adapter.requestDevice(desc), deviceId = WebGPU.mgrDevice.create(adapter);
+      let WebGPU = wasm.WebGPU, adapter = await navigator.gpu.requestAdapter(), adapterId = WebGPU.mgrAdapter.create(adapter), desc = { requiredFeatures: ["texture-compression-bc", "depth32float-stencil8"] }, device = await adapter.requestDevice(desc), deviceId = WebGPU.mgrDevice.create(adapter);
       wasm.preinitializedWebGPUDevice = device, canvasElement.getContext("webgpu").configure({ device, format: navigator.gpu.getPreferredCanvasFormat(), alphaMode: "premultiplied" });
     }
     let engine = new WonderlandEngine(wasm, loadingScreenData, renderer);
@@ -6964,8 +7094,8 @@
       }
     }
     onDestroy() {
-      var _a11;
-      __privateMethod(_a11 = _Anchor, _removeAnchor, removeAnchor_fn).call(_a11, this);
+      var _a12;
+      __privateMethod(_a12 = _Anchor, _removeAnchor, removeAnchor_fn).call(_a12, this);
     }
   };
   var Anchor = _Anchor;
@@ -7010,10 +7140,10 @@
     if (this.persist) {
       if (anchor.requestPersistentHandle !== void 0) {
         anchor.requestPersistentHandle().then((uuid) => {
-          var _a11;
+          var _a12;
           this.uuid = uuid;
           __privateMethod(this, _onCreate, onCreate_fn).call(this, anchor);
-          __privateMethod(_a11 = _Anchor, _addAnchor, addAnchor_fn).call(_a11, this);
+          __privateMethod(_a12 = _Anchor, _addAnchor, addAnchor_fn).call(_a12, this);
         });
         return;
       } else {
@@ -25363,7 +25493,7 @@
     constructor(objectPrototype, objectPoolParams) {
       this._myObjectPrototype = objectPrototype;
       this._myObjectPoolParams = objectPoolParams;
-      if (objectPrototype instanceof Object3D) {
+      if (objectPrototype instanceof Object3D2) {
         this._myIsObject3D = true;
         if (this._myObjectPoolParams.myCloneParams == null || this._myObjectPoolParams.myCloneParams instanceof ObjectCloneParams) {
           this._myIsObject3DCloneParams = true;
@@ -38844,7 +38974,7 @@
         return ObjectUtils.getComponentsAmountMapChildren(this, outComponentsAmountMap);
       }
     };
-    PluginUtils.injectOwnProperties(objectExtension, Object3D.prototype, false, true, true);
+    PluginUtils.injectOwnProperties(objectExtension, Object3D2.prototype, false, true, true);
   }
 
   // node_modules/wle-pp/dist/pp/plugin/wl/extensions/init_wl_extentions.js
