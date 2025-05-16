@@ -31,7 +31,8 @@
                 {
                     "type": "pp-virtual-gamepad"
                 }
-            ]
+            ],
+            "hiddenForLightBaking": true
         },
         "98e84281-c0c7-4db3-8773-585cbf687aff": {
             "name": "Player",
@@ -722,7 +723,7 @@
                 {
                     "type": "particles-spawner",
                     "particles-spawner": {
-                        "_myParticlesContainer": "8c4548ad-0740-40ab-883f-1bf8fa588d30"
+                        "_myParticlesContainer": null
                     }
                 },
                 {
@@ -1295,65 +1296,6 @@
         "97387186-889f-4768-81e0-fe144b612a2d": {
             "name": "Cursor Pointer",
             "parent": "8f116677-15c2-4d71-a7dc-90239c83ece8"
-        },
-        "1FBFB83F-AE5E-454D-B97B-1D764FEEC8BC": {
-            "name": "Cow",
-            "parent": "526adb29-57d2-4b09-ac41-5efed44996a2",
-            "translation": [
-                2.1709671,
-                0.0741029,
-                -1.3812512
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ],
-            "scaling": [
-                1.0,
-                1.0,
-                1.0
-            ],
-            "components": [
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "translationOffset": [
-                            0.0,
-                            0.6,
-                            0.1
-                        ],
-                        "box": {
-                            "extents": [
-                                0.3499999,
-                                0.6,
-                                0.8
-                            ]
-                        }
-                    }
-                }
-            ]
-        },
-        "BB2EE750-4D37-429E-A5E3-E9BB4DC5AC9A": {
-            "link": {
-                "name": "Cow 01",
-                "file": "assets\\models\\playground\\Cow 01.fbx"
-            },
-            "parent": "1FBFB83F-AE5E-454D-B97B-1D764FEEC8BC",
-            "components": [
-                {
-                    "type": "mesh",
-                    "mesh": {
-                        "material": "821469F7-53B9-48FA-B3DB-276B72E93016",
-                        "mesh": "B2861EAD-B385-436C-8F1A-138654E6453A"
-                    }
-                },
-                {
-                    "type": "image-texture"
-                }
-            ]
         }
     },
     "meshes": {
@@ -1706,7 +1648,7 @@
         },
         "db47625f-c472-4ba6-84f2-92ac04eaef74": {
             "link": {
-                "name": "lib\\Compatibility.frag",
+                "name": "lib\\Compatibility.glsl",
                 "file": "default"
             }
         },
@@ -1718,25 +1660,25 @@
         },
         "93ae94dd-8359-46a9-997d-c85b1b308ad5": {
             "link": {
-                "name": "lib\\GI.frag",
+                "name": "lib\\GI.glsl",
                 "file": "default"
             }
         },
         "c0a6359a-3165-4ef5-85e2-2e1d3dd3ee33": {
             "link": {
-                "name": "lib\\Inputs.frag",
+                "name": "lib\\Inputs.glsl",
                 "file": "default"
             }
         },
         "f285dce6-4581-44dc-9f0f-cb4bf4c8b830": {
             "link": {
-                "name": "lib\\Lights.frag",
+                "name": "lib\\Lights.glsl",
                 "file": "default"
             }
         },
         "869e83ac-1495-4ca6-b0d0-8240d622714d": {
             "link": {
-                "name": "lib\\Materials.frag",
+                "name": "lib\\Materials.glsl",
                 "file": "default"
             }
         },
@@ -1748,7 +1690,7 @@
         },
         "33337941-e2c3-4a09-b7c0-8bbd998a2f90": {
             "link": {
-                "name": "lib\\Packing.frag",
+                "name": "lib\\Packing.glsl",
                 "file": "default"
             }
         },
@@ -1760,25 +1702,25 @@
         },
         "8c10b2fc-528c-4970-a642-571a618e4c81": {
             "link": {
-                "name": "lib\\Slug.frag",
+                "name": "lib\\Slug.frag.glsl",
                 "file": "default"
             }
         },
         "88f3d9f5-09cd-4bf0-8c7d-8f025ce7f7a7": {
             "link": {
-                "name": "lib\\Slug.vert",
+                "name": "lib\\Slug.vert.glsl",
                 "file": "default"
             }
         },
         "7886dc0b-f76a-4a10-a328-c3aa7b941472": {
             "link": {
-                "name": "lib\\Surface.frag",
+                "name": "lib\\Surface.glsl",
                 "file": "default"
             }
         },
         "aff338d8-4cb8-4e68-8e1c-9f4f4ebeb7e1": {
             "link": {
-                "name": "lib\\Textures.frag",
+                "name": "lib\\Textures.glsl",
                 "file": "default"
             }
         },
@@ -1938,9 +1880,9 @@
             "name": "Gold",
             "Phong": {
                 "diffuseColor": [
-                    1.0,
-                    0.5882353,
-                    0.1843137,
+                    0.0,
+                    0.3416841,
+                    0.6313725,
                     1.0
                 ],
                 "ambientColor": [
@@ -1949,15 +1891,19 @@
                     0.5,
                     1.0
                 ],
-                "shininess": 2,
+                "shininess": 0,
                 "specularColor": [
                     1.0,
                     1.0,
                     1.0,
                     0.3921568
-                ]
+                ],
+                "diffuseTexture": "FD4B03A6-A117-42E7-86C7-EFC3392099F0"
             },
-            "pipeline": "313227a6-182e-4b31-9838-632a9291f4d2"
+            "pipeline": "2762071d-3ed2-487d-9b98-0bf0a6e8f24c",
+            "Flat": {
+                "flatTexture": "FD4B03A6-A117-42E7-86C7-EFC3392099F0"
+            }
         },
         "90348bdc-8768-4244-9398-b89361708289": {
             "name": "Cyan",
@@ -2213,6 +2159,9 @@
         "993BAB3A-2756-4C47-BF02-48464A90B09D": {
             "name": "material",
             "pipeline": "6e3da297-ea04-4d73-a0c7-3889145038df"
+        },
+        "7AD3FD9F-1552-4A6A-853F-C47FC1D4C08F": {
+            "name": "material.000"
         }
     },
     "animations": {},
@@ -2414,8 +2363,8 @@
             "name": "wle-pplayground",
             "version": [
                 1,
-                3,
-                2
+                4,
+                1
             ],
             "description": "Playground template project for the Wonderland Engine",
             "type": "game",
@@ -2441,10 +2390,10 @@
         },
         "rendering": {
             "clearColor": [
-                0.4235294,
                 1.0,
-                0.8705882,
-                1.0
+                0.6647289,
+                0.3372548,
+                0.6705882
             ]
         },
         "xr": {
@@ -2487,5 +2436,6 @@
                 "7": "Group 7"
             }
         }
-    }
+    },
+    "particleEffects": {}
 }

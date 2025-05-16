@@ -12,7 +12,6 @@ import { WonderlandEngine } from '@wonderlandengine/api';
 
 /* wle:auto-imports:start */
 import {Cursor} from '@wonderlandengine/components';
-import {ImageTexture} from '@wonderlandengine/components';
 import {MouseLookComponent} from '@wonderlandengine/components';
 import {ConsoleVRToolComponent} from 'wle-pp';
 import {EasyTuneToolComponent} from 'wle-pp';
@@ -42,7 +41,6 @@ import {SFXOnGrabThrowComponent} from './playground/components/sfx_on_grab_throw
 export default function (engine: Readonly<WonderlandEngine>): void {
 /* wle:auto-register:start */
 engine.registerComponent(Cursor);
-engine.registerComponent(ImageTexture);
 engine.registerComponent(MouseLookComponent);
 engine.registerComponent(ConsoleVRToolComponent);
 engine.registerComponent(EasyTuneToolComponent);

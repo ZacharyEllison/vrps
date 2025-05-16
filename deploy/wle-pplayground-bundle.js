@@ -59389,7 +59389,6 @@ __publicField(PlaygroundGatewayComponent, "TypeName", "playground-gateway");
 // src/index.ts
 function src_default(engine) {
   engine.registerComponent(Cursor);
-  engine.registerComponent(ImageTexture);
   engine.registerComponent(MouseLookComponent);
   engine.registerComponent(ConsoleVRToolComponent);
   engine.registerComponent(EasyTuneToolComponent);

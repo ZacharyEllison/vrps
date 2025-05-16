@@ -12,7 +12,10 @@
             "visualizeViews": true,
             "visualizeCollision": true,
             "visualizeOverdraw": false,
-            "visualizePhysics": true
+            "visualizePhysics": true,
+            "visualizeProbes": true,
+            "visualizeProbeVoxels": true,
+            "visualizeProbeBounds": true
         },
         "mainView": {
             "launchSSL": false
@@ -28,7 +31,7 @@
         "Console": true,
         "Scene Outline": true,
         "Properties": true,
-        "Project Settings": false,
+        "Project Settings": true,
         "Resources": true,
         "Project Data": false,
         "Benchmark": false,
