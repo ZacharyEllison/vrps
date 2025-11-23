@@ -176,15 +176,20 @@
                 }
             ],
             "translation": [
-                0.0,
+                -2.9802322387695313e-8,
                 20.0000514,
-                0.0
+                -4.76837158203125e-7
             ],
             "rotation": [
                 -0.2156182,
-                0.0850898,
-                0.0188639,
+                0.0850897,
+                0.0188638,
                 0.9725804
+            ],
+            "scaling": [
+                1.0,
+                1.0,
+                1.0
             ]
         },
         "8cd24f76-f5f3-4f30-9742-2ac04ef0cc16": {
@@ -774,7 +779,8 @@
                         "groups": 2,
                         "block": 5,
                         "gravity": false,
-                        "static": true
+                        "static": true,
+                        "bounciness": 5.0
                     }
                 }
             ],
@@ -784,163 +790,9 @@
                 0.0
             ],
             "scaling": [
-                7.5,
+                100.0,
                 1.0,
-                12.0
-            ]
-        },
-        "62d70d96-7b4d-451c-a863-0b9947b0fdec": {
-            "name": "Walls",
-            "parent": "526adb29-57d2-4b09-ac41-5efed44996a2"
-        },
-        "9cd79e6d-22f1-4bab-a6bc-4ba70e1a54a6": {
-            "name": "Wall",
-            "parent": "62d70d96-7b4d-451c-a863-0b9947b0fdec",
-            "components": [
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                7.5,
-                                5.0,
-                                1.0
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "static": true
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                5.0,
-                -13.0
-            ],
-            "scaling": [
-                7.5,
-                5.0,
-                1.0
-            ]
-        },
-        "152b02cf-8aab-429a-9d5c-8b9db3c14fdb": {
-            "name": "Wall",
-            "parent": "62d70d96-7b4d-451c-a863-0b9947b0fdec",
-            "components": [
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                7.5,
-                                5.0,
-                                1.0
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "static": true
-                    }
-                }
-            ],
-            "translation": [
-                0.0,
-                5.0,
-                13.0
-            ],
-            "scaling": [
-                10.0459146,
-                5.0,
-                1.0
-            ],
-            "rotation": [
-                0.0,
-                0.0,
-                0.0,
-                1.0
-            ]
-        },
-        "b7b56987-0514-45dc-84fa-5f4cdb898669": {
-            "name": "Wall",
-            "parent": "62d70d96-7b4d-451c-a863-0b9947b0fdec",
-            "components": [
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                14.0,
-                                5.0,
-                                1.0
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "static": true
-                    }
-                }
-            ],
-            "translation": [
-                8.5,
-                5.0006198,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.7071068,
-                0.0,
-                0.7071068
-            ],
-            "scaling": [
-                14.0,
-                5.0,
-                1.0
-            ]
-        },
-        "be6b03c7-8d20-4d59-85de-a58d6b69d5ab": {
-            "name": "Wall",
-            "parent": "62d70d96-7b4d-451c-a863-0b9947b0fdec",
-            "components": [
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                14.0,
-                                5.0,
-                                1.0
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "static": true
-                    }
-                }
-            ],
-            "translation": [
-                -8.5,
-                5.0002169,
-                0.0
-            ],
-            "rotation": [
-                0.0,
-                0.7071068,
-                0.0,
-                0.7071068
-            ],
-            "scaling": [
-                14.0,
-                5.0,
-                1.0
+                100.0
             ]
         },
         "64e23a69-8155-4b95-abd9-0cc9d7b1b753": {
@@ -995,45 +847,6 @@
         "58ca914f-fc95-4265-8c31-4b3ca58859f4": {
             "name": "Cursors",
             "parent": "f51fe37d-3aea-4317-af6b-e76b64a41b54"
-        },
-        "72013F8C-95E8-4E21-A081-9D3A5D2E87CF": {
-            "name": "Wall",
-            "parent": "62d70d96-7b4d-451c-a863-0b9947b0fdec",
-            "components": [
-                {
-                    "type": "physx",
-                    "physx": {
-                        "shape": "box",
-                        "box": {
-                            "extents": [
-                                14.0,
-                                5.0,
-                                1.0
-                            ]
-                        },
-                        "groups": 2,
-                        "block": 5,
-                        "gravity": false,
-                        "static": true
-                    }
-                }
-            ],
-            "translation": [
-                3.379375357326353e-8,
-                12.0,
-                0.0000052
-            ],
-            "rotation": [
-                -0.5,
-                0.5,
-                0.5,
-                0.5
-            ],
-            "scaling": [
-                13.9998455,
-                6.0,
-                0.9999876
-            ]
         },
         "001b6842-6e26-4180-9942-a286b38aaea1": {
             "name": "Mesh",
@@ -1162,7 +975,7 @@
                         "simulate": true,
                         "static": false,
                         "kinematic": false,
-                        "bounciness": 2.0
+                        "bounciness": 0.0
                     }
                 }
             ]
@@ -2364,7 +2177,7 @@
             "version": [
                 1,
                 4,
-                1
+                7
             ],
             "description": "Playground template project for the Wonderland Engine",
             "type": "game",
